@@ -1,7 +1,7 @@
 #![allow(non_snake_case)]
 
 use dioxus::prelude::*;
-use dioxus_logger::tracing;
+use dioxus_logger::tracing::{self, Level};
 
 #[derive(Clone, Routable, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 enum Route {
@@ -46,8 +46,37 @@ fn Home() -> Element {
     let mut text = use_signal(|| String::from("..."));
 
     rsx! {
-        head::Script {
-            
+        for href in vec![
+            "https://fonts.googleapis.com",
+            "https://fonts.gstatic.com",
+        ] {
+            head::Link {
+                rel: "preconnect",
+                href,
+            }
+        }
+        for href in vec![
+            "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+            "https://fonts.googleapis.com/icon?family=Material+Icons",
+            "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0",
+        ] {
+            head::Link {
+                rel: "stylesheet",
+                href,
+            }
+        }
+        head::Link {
+            rel: "icon",
+            r#type: "image/x-icon",
+            href: asset!("./assets/favicon.ico"),
+        }
+        head::Link {
+            rel: "stylesheet",
+            href: asset!("./assets/main.css")
+        }
+        head::Link {
+            rel: "stylesheet",
+            href: asset!("./assets/tailwind.css")
         }
         Link {
             to: Route::Blog {

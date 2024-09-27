@@ -1,0 +1,15 @@
+#+title: Biyard Homepage
+
+* Install Pre-Requisites
++ It installs =dioxus-cli v0.6.0-alpha.2= and =aws-cdk=.
+
+#+begin_src shell
+  make setup
+#+end_src
+
+* Running a server locally
++ It runs a fullstack server on 127.0.0.1:8080 port
+
+#+begin_src shell
+  make run
+#+end_src

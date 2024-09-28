@@ -50,23 +50,23 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
         ],
         highlight_service: HighlightService {
             name: "d.AGIT".to_string(),
-            description: "Service 1 description".to_string(),
+            description: "Experience full stack decentralization: from DAOs and crypto cloud services to games, NFTs, and social media, the Internet Computer has something for everyone.".to_string(),
             external_link: "https://dagit.club".to_string(),
             past_features: vec![
                 Feature {
                     title: "Feature 1".to_string(),
                     description: "Feature 1 description".to_string(),
-                    status: FeatureStatus::Completed,
+                    status: FeatureStatus::Completed("".to_string()),
                 },
                 Feature {
                     title: "Feature 1".to_string(),
                     description: "Feature 1 description".to_string(),
-                    status: FeatureStatus::Completed,
+                    status: FeatureStatus::Completed("".to_string()),
                 },
                 Feature {
                     title: "Feature 1".to_string(),
                     description: "Feature 1 description".to_string(),
-                    status: FeatureStatus::Completed,
+                    status: FeatureStatus::Completed("".to_string()),
                 },
             ],
             future_features: vec![
@@ -90,22 +90,22 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
                 WorkingFeature {
                     code_name: "Alpha 1".to_string(),
                     goal: "Alpha 1 aims to blah blah".to_string(),
-                    status: FeatureStatus::Completed,
+                    status: FeatureStatus::Completed("Sep 24, 2024".to_string()),
                     features: vec![
                         Feature {
                             title: "Feature 1".to_string(),
                             description: "Feature 1 description".to_string(),
-                            status: FeatureStatus::Completed,
+                            status: FeatureStatus::Completed("Sep 24, 2024".to_string()),
                         },
                         Feature {
                             title: "Feature 1".to_string(),
                             description: "Feature 1 description".to_string(),
-                            status: FeatureStatus::Completed,
+                            status: FeatureStatus::Completed("Sep 24, 2024".to_string()),
                         },
                         Feature {
                             title: "Feature 1".to_string(),
                             description: "Feature 1 description".to_string(),
-                            status: FeatureStatus::Completed,
+                            status: FeatureStatus::Completed("Sep 24, 2024".to_string()),
                         },
                     ],
                 },
@@ -117,7 +117,7 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
                         Feature {
                             title: "Feature 1".to_string(),
                             description: "Feature 1 description".to_string(),
-                            status: FeatureStatus::Completed,
+                            status: FeatureStatus::Completed("Sep 25, 2024".to_string()),
                         },
                         Feature {
                             title: "Feature 1".to_string(),

@@ -1,5 +1,9 @@
 #![allow(non_snake_case)]
-use crate::{components::feature_button::FeatureButton, prelude::*};
+use crate::{
+    components::feature_button::{FeatureButton, ProgressFeature},
+    models::highlight_service::FeatureStatus,
+    prelude::*,
+};
 use dioxus::prelude::*;
 
 #[component]
@@ -9,9 +13,9 @@ pub(super) fn DagitRoadmap() -> Element {
 
     rsx! {
         div {
-            class: "w-full flex flex-col items-center justify-center",
+            class: "w-full flex flex-col items-center justify-center gap-[50px]",
             div {
-                class: "max-w-[1440px] m-auto flex flex-col gap-[50px]",
+                class: "max-w-[1440px] 2xl:w-[1440px] m-auto flex flex-col gap-[10px]",
                 div {
                     class: "flex flex-row justify-start items-center gap-[10px]",
                     div {
@@ -36,6 +40,18 @@ pub(super) fn DagitRoadmap() -> Element {
                     completed: true,
                     no_features: service.past_features.len(),
                     text: "Past features",
+                }
+                for working_feature in service.working_features.iter() {
+                    ProgressFeature {
+                        code_name: working_feature.code_name.clone(),
+                        goal: working_feature.goal.clone(),
+                        text: "Features",
+                        no_features: working_feature.features.len(),
+                        completed_date: match &working_feature.status {
+                            FeatureStatus::Completed(date) => Some(date.clone()),
+                            _ => None,
+                        },
+                    }
                 }
                 FeatureButton {
                     completed: false,

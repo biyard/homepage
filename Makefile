@@ -20,11 +20,11 @@ AWS_DYNAMODB_TABLE ?= "biyard-dev"
 
 .PHONY: setup run
 setup:
-	cargo install dioxus --version 0.6.0-alpha.2
+	cargo install dioxus-cli --version 0.6.0-alpha.2
 	npm install -g aws-cdk tailwindcss
 
 run:
-	dx serve -i false
+	dx serve -i false --skip-assets
 
 .ONESHELL:
 build-lambda: clean assets/tailwind.css

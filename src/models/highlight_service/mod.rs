@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub enum FeatureStatus {
     InProgress,
-    Completed,
+    Completed(String),
     NotStarted,
 }
 

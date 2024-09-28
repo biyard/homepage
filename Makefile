@@ -1,3 +1,5 @@
+VERSION ?= v0.1.0
+COMMIT ?= $(shell git rev-parse --short HEAD)
 ENV ?= local
 
 ifeq ("$(ENV)","prod")

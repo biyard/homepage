@@ -1,15 +1,37 @@
 #![allow(non_snake_case)]
 
+pub mod pages {
+    pub mod home;
+}
+
+pub mod layouts {
+    pub mod root_layout;
+}
+
+pub mod components {
+    pub mod feature_button;
+    pub mod icon_button;
+    pub mod icons;
+    pub mod image_card;
+    pub mod outlined_button;
+}
+
+pub mod routes;
+
+pub mod prelude {
+    pub use crate::components::icon_button::*;
+    pub use crate::components::icons;
+    pub use crate::components::outlined_button::*;
+    pub use crate::layouts::root_layout::RootLayout;
+    pub use crate::pages::home::Home;
+}
+
+pub mod apis;
+pub mod models;
+
 use dioxus::prelude::*;
 use dioxus_logger::tracing::{self, Level};
-
-#[derive(Clone, Routable, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
-enum Route {
-    #[route("/")]
-    Home {},
-    #[route("/blog/:id")]
-    Blog { id: i32 },
-}
+use routes::Route;
 
 fn main() {
     dioxus_logger::init(match option_env!("LOG_LEVEL") {
@@ -27,24 +49,6 @@ fn main() {
 }
 
 fn App() -> Element {
-    rsx! {
-        Router::<Route> {}
-    }
-}
-
-#[component]
-fn Blog(id: i32) -> Element {
-    rsx! {
-        Link { to: Route::Home {}, "Go to counter" }
-        "Blog post {id}"
-    }
-}
-
-#[component]
-fn Home() -> Element {
-    let mut count = use_signal(|| 0);
-    let mut text = use_signal(|| String::from("..."));
-
     rsx! {
         for href in vec![
             "https://fonts.googleapis.com",
@@ -74,42 +78,29 @@ fn Home() -> Element {
             rel: "stylesheet",
             href: asset!("./assets/main.css")
         }
-        head::Link {
-            rel: "stylesheet",
-            href: asset!("./assets/tailwind.css")
-        }
-        Link {
-            to: Route::Blog {
-                id: count()
-            },
-            "Go to blog"
-        }
-        div {
-            h1 { "High-Five counter: {count}" }
-            button { onclick: move |_| count += 1, "Up high!" }
-            button { onclick: move |_| count -= 1, "Down low!" }
-            button {
-                onclick: move |_| async move {
-                    if let Ok(data) = get_server_data().await {
-                        tracing::info!("Client received: {}", data);
-                        text.set(data.clone());
-                        post_server_data(data).await.unwrap();
-                    }
-                },
-                "Get Server Data"
-            }
-            p { "Server data: {text}"}
+        load_tailwindcss {}
+        Router::<Route> {}
+    }
+}
+
+#[cfg(not(feature = "lambda"))]
+#[allow(dead_code)]
+fn load_tailwindcss() -> Element {
+    rsx! {
+        head::Script {
+            src: "https://cdn.tailwindcss.com/3.4.5",
+            ""
         }
     }
 }
 
-#[server(PostServerData)]
-async fn post_server_data(data: String) -> Result<(), ServerFnError> {
-    tracing::info!("Server received: {}", data);
-    Ok(())
-}
-
-#[server(GetServerData)]
-async fn get_server_data() -> Result<String, ServerFnError> {
-    Ok("Hello from the server!".to_string())
+#[cfg(feature = "lambda")]
+#[allow(dead_code)]
+fn load_tailwindcss() -> Element {
+    rsx! {
+        head::Link {
+            rel: "stylesheet",
+            href: asset!("./assets/tailwind.css")
+        }
+    }
 }

@@ -28,7 +28,7 @@ pub(super) fn Members() -> Element {
 pub fn MemberCard(member: Member, class: Option<String>) -> Element {
     rsx! {
         div {
-            class: "group w-full h-full",
+            class: "group w-full h-full overflow-hidden",
             div {
                 style: format!("background-image: url('{}')", member.image.clone()),
                 class: format!("rounded-[8px] h-[450px] transition-all duration-1000 [backface-visibility:hidden] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] flex flex-col gap-[10px] items-center justify-center bg-cover {}", class.unwrap_or_default()),

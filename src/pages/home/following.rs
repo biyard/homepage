@@ -8,13 +8,13 @@ use dioxus::prelude::*;
 pub(super) fn Following() -> Element {
     rsx! {
         div {
-            class: "w-full flex flex-col items-center justify-center gap-[50px]",
+            class: "w-full flex flex-col items-center justify-center gap-[50px] px-[20px]",
             div {
-                class: "max-w-[1440px] 2xl:w-[1440px] m-auto grid grid-cols-3 px-[100px] py-[35px] items-center bg-[linear-gradient(285.82deg,#392D69_-64.65%,#7754AC_88.96%)] rounded-[20px]",
+                class: "max-w-[1440px] 2xl:w-[1440px] m-auto grid grid-cols-3 px-[50px] md:px-[100px] py-[35px] items-center bg-[linear-gradient(285.82deg,#392D69_-64.65%,#7754AC_88.96%)] rounded-[20px]",
                 div {
-                    class: "flex flex-col justify-start items-start gap-[10px] col-span-2",
+                    class: "flex flex-col justify-start items-start gap-[10px] col-span-3 md:col-span-2",
                     div {
-                        class: "text-[32px] leading-[40px] font-bold",
+                        class: "text-[18px] md:text-[32px] font-bold",
                         "For technical collaborations, investment proposals, or service inquiries, please contact us at the email below."
                     }
                     input {
@@ -27,7 +27,7 @@ pub(super) fn Following() -> Element {
                     }
                 }
                 div {
-                    class: "col-span-1",
+                    class: "col-span-0 md:col-span-1",
                 }
             }
         }

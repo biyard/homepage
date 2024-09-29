@@ -35,7 +35,8 @@ pub(super) fn DagitRoadmap() -> Element {
             }
 
             div {
-                class: "flex flex-row gap-[30px]",
+                style: "scrollbar-width: none;",
+                class: "flex flex-row gap-[30px] w-full overflow-x-auto py-[5px]",
                 FeatureButton {
                     completed: true,
                     no_features: service.past_features.len(),

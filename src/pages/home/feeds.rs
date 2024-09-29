@@ -7,7 +7,7 @@ pub(super) fn Feeds() -> Element {
 
     rsx! {
         div {
-            class: "w-full flex flex-col items-center justify-center gap-[50px] py-[100px]",
+            class: "w-full flex flex-col items-center justify-center gap-[50px] py-[100px] px-[20px]",
             div {
                 class: "max-w-[1440px] 2xl:w-[1440px] flex flex-col gap-[30px]",
                 div {
@@ -15,14 +15,14 @@ pub(super) fn Feeds() -> Element {
                     "Voices of Biyard"
                 }
                 div {
-                    class: "grid grid-cols-4 gap-[30px] h-[318px]",
+                    class: "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 grid-row-dense gap-[30px]",
                     for (i, feed) in ctrl.feeds().iter().enumerate() {
                         FeedCard {
                             title: feed.title.clone(),
                             date: feed.published.clone(),
                             external_link: feed.external_link.clone(),
                             class: if i != ctrl.feeds().len() - 1 {
-                                Some("border-r-[1px] border-white col-span-1".to_string())
+                                Some("border-b-[1px] sm:border-b-[0px] sm:border-r-[1px] border-white col-span-1 pb-[30px]".to_string())
                             } else {
                                 None
                             }

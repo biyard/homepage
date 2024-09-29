@@ -20,25 +20,24 @@ pub mod usecases;
 #[component]
 pub fn Home() -> Element {
     let ctrl = controller::Controller::init();
-    if !ctrl.is_loaded() {
-        return rsx! {
+
+    rsx! {
+        if !ctrl.is_loaded() {
             div {
                 class: "flex w-full flex-col items-center justify-center",
                 "Loading..."
             }
-        };
-    }
-
-    rsx! {
-        div {
-            class: "flex w-full flex-col items-center justify-center",
-            SloganSection {}
-            ServiceSummary {}
-            DagitRoadmap {}
-            UseCases {}
-            Feeds {}
-            Members {}
-            Following {}
+        } else {
+            div {
+                class: "flex w-full flex-col items-center justify-center",
+                SloganSection {}
+                ServiceSummary {}
+                DagitRoadmap {}
+                UseCases {}
+                Feeds {}
+                Members {}
+                Following {}
+            }
         }
     }
 }

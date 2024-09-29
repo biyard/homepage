@@ -9,7 +9,7 @@ use crate::prelude::*;
 pub fn TopMenu() -> Element {
     rsx! {
         div {
-            class:"w-full backdrop-blur-[20px] bg-[#21344D]/50 p-[10px] absolute top-0 left-0 z-[100]",
+            class:"w-full backdrop-blur-[20px] bg-[#21344D]/50 p-[10px] fixed top-0 left-0 z-[100]",
             div {
                 class: "max-w-[1440px] flex flex-row justify-between items-center m-auto",
                 div {

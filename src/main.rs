@@ -10,6 +10,7 @@ pub mod layouts {
 
 pub mod components {
     pub mod feature_button;
+    pub mod filled_button;
     pub mod icon_button;
     pub mod icons;
     pub mod image_card;

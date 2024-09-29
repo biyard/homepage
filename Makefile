@@ -24,7 +24,7 @@ setup:
 	npm install -g aws-cdk tailwindcss
 
 run:
-	dx serve -i false --skip-assets
+	dx serve -i false
 
 .ONESHELL:
 build-lambda: clean assets/tailwind.css

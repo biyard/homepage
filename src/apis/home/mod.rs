@@ -7,7 +7,9 @@ use dioxus_logger::tracing;
 use serde::{Deserialize, Serialize};
 
 use crate::models::{
+    feed::Feed,
     highlight_service::{Feature, FeatureStatus, HighlightService, WorkingFeature},
+    models::Member,
     service::Service,
     slogan::Slogan,
 };
@@ -17,6 +19,8 @@ pub struct GetHomeResponse {
     pub slogan: Slogan,
     pub services: Vec<Service>,
     pub highlight_service: HighlightService,
+    pub feeds: Vec<Feed>,
+    pub members: Vec<Member>,
 }
 
 #[server(endpoint = "/home", input = GetUrl, output = Json)]
@@ -133,5 +137,99 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
                 }
             ],
         },
+        feeds: vec![
+            Feed {
+                title: "대한민국, 테라⋅루나라는 핑계에서 벗어나야할 시간".to_string(),
+                published: "Sep. 25, 2024".to_string(),
+                external_link: "http://www.opinionnews.co.kr/news/articleView.html?idxno=105514".to_string(),
+            },
+            Feed {
+                title: "이제는 우리도 ‘종이없는 정부'가 필요, 디지털정부와 블록체인의 역할".to_string(),
+                published: "Sep. 19, 2024".to_string(),
+                external_link: "http://www.opinionnews.co.kr/news/articleView.html?idxno=105260".to_string(),
+            },
+            Feed {
+                title: "예술과 블록체인, NFT 이후의 가능성".to_string(),
+                published: "Sep. 11, 2024".to_string(),
+                external_link: "http://www.opinionnews.co.kr/news/articleView.html?idxno=104897".to_string(),
+            },
+            Feed {
+                title: "일본의 Web3 혁신과 도전, 대한민국이 놓치고 있는 것은?".to_string(),
+                published: "Sep. 4, 2024".to_string(),
+                external_link: "http://www.opinionnews.co.kr/news/articleView.html?idxno=104524".to_string(),
+            },
+        ],
+        members: vec![
+            Member {
+                name: "Summer".to_string(),
+                role: "Founder & CEO".to_string(),
+                image: "https://metadata.biyard.co/members/summer.png".to_string(),
+                description: "Summer is".to_string(),
+                email: Some("summer@biyard.co".to_string()),
+                github: None,
+                linkedin: None,
+                web: None,
+            },
+            Member {
+                name: "Miner".to_string(),
+                role: "CEO & CTO".to_string(),
+                image: "https://metadata.biyard.co/members/miner.png".to_string(),
+                description: "Summer is".to_string(),
+                email: Some("miner@biyard.co".to_string()),
+                github: Some("https://github.com/hackartists".to_string()),
+                linkedin: None,
+                web: None,
+            },
+            Member {
+                name: "Rosa".to_string(),
+                role: "Project Manager".to_string(),
+                image: "https://metadata.biyard.co/members/rosa.png".to_string(),
+                description: "Senior Project Manager with over 10 years of experience in developing and managing projects for major corporations and national research institutes in South Korea. She holds a Bachelor's and Master's degree in Engineering from Korea University, as well as a Master's in Technology Management from KAIST.".to_string(),
+                email: Some("rosa@biyard.co".to_string()),
+                github: None,
+                linkedin: None,
+                web: None,
+            },
+            Member {
+                name: "Victor".to_string(),
+                role: "Software Engineer".to_string(),
+                image: "https://metadata.biyard.co/members/victor.png".to_string(),
+                description: "".to_string(),
+                email: Some("victor@biyard.co".to_string()),
+                github: None,
+                linkedin: None,
+                web: None,
+            },
+            Member {
+                name: "Ryan".to_string(),
+                role: "Software Engineer".to_string(),
+                image: "https://metadata.biyard.co/members/victor.png".to_string(),
+                description: "".to_string(),
+                email: Some("ryan@biyard.co".to_string()),
+                github: None,
+                linkedin: None,
+                web: None,
+            },
+            Member {
+                name: "Jace".to_string(),
+                role: "UX/UI Designer".to_string(),
+                image: "https://metadata.biyard.co/members/jace.png".to_string(),
+                description: "".to_string(),
+                email: Some("ryan@biyard.co".to_string()),
+                github: None,
+                linkedin: None,
+                web: None,
+            },
+            Member {
+                name: "Jihwan".to_string(),
+                role: "Researcher".to_string(),
+                image: "https://metadata.biyard.co/members/victor.png".to_string(),
+                description: "Ji-hwan is responsible for analyzing blockchain market trends and technologies. He also manages the company's investments and partnerships, contributing to strategic growth and collaboration.".to_string(),
+                email: Some("jihwan@biyard.co".to_string()),
+                github: None,
+                linkedin: None,
+                web: None,
+            },
+        ],
     })
 }

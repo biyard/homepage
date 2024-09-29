@@ -13,7 +13,7 @@ pub(super) fn DagitRoadmap() -> Element {
 
     rsx! {
         div {
-            class: "w-full flex flex-col items-center justify-center gap-[50px]",
+            class: "w-full flex flex-col items-center justify-center gap-[50px] py-[100px]",
             div {
                 class: "max-w-[1440px] 2xl:w-[1440px] m-auto flex flex-col gap-[10px]",
                 div {

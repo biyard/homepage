@@ -47,7 +47,6 @@ cdk-build: fixtures/cdk/node_modules
 
 cdk-deploy:
 	cd fixtures/cdk
-	$(BUILD_ENV) cdk bootstrap $(AWS_FLAG)
 	yes | $(BUILD_ENV) cdk deploy --require-approval never $(AWS_FLAG)
 
 clean:
@@ -57,7 +56,7 @@ deploy: build-lambda cdk-build cdk-deploy s3-sync
 
 s3-sync:
 	aws s3 sync dist s3://$(DOMAIN) $(AWS_FLAG) --delete
-	aws cloudfront create-invalidation --distribution-id $(CDN_ID) --paths "/*" $(AWS_FLAG)
+	aws cloudfront create-invalidation --distribution-id $(CDN_ID) --paths "/*" $(AWS_FLAG) > /dev/null
 
 run-api: build-lambda cdk-build sam-local-api
 

@@ -19,6 +19,6 @@ getrandom = { version = "0.2.15", features = ["js"], optional = true }
 
 [features]
 default = []
-server = ["dioxus/axum"]
-web = ["dioxus/web", "getrandom"]
-lambda = []
+server = ["dioxus-aws/server"]
+lambda = ["dioxus-aws/lambda"]
+web = ["dioxus-aws/web", "getrandom"]

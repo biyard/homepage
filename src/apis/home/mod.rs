@@ -163,7 +163,7 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
             Member {
                 name: "Summer".to_string(),
                 role: "Founder & CEO".to_string(),
-                image: "https://metadata.biyard.co/members/summer.png".to_string(),
+                image: "https://dev.biyard.co/members/summer.png".to_string(),
                 description: "Summer is".to_string(),
                 email: Some("summer@biyard.co".to_string()),
                 github: None,
@@ -173,7 +173,7 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
             Member {
                 name: "Miner".to_string(),
                 role: "CEO & CTO".to_string(),
-                image: "https://metadata.biyard.co/members/miner.png".to_string(),
+                image: "https://dev.biyard.co/members/miner.png".to_string(),
                 description: "Summer is".to_string(),
                 email: Some("miner@biyard.co".to_string()),
                 github: Some("https://github.com/hackartists".to_string()),
@@ -183,7 +183,7 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
             Member {
                 name: "Rosa".to_string(),
                 role: "Project Manager".to_string(),
-                image: "https://metadata.biyard.co/members/rosa.png".to_string(),
+                image: "https://dev.biyard.co/members/rosa.png".to_string(),
                 description: "Senior Project Manager with over 10 years of experience in developing and managing projects for major corporations and national research institutes in South Korea. She holds a Bachelor's and Master's degree in Engineering from Korea University, as well as a Master's in Technology Management from KAIST.".to_string(),
                 email: Some("rosa@biyard.co".to_string()),
                 github: None,
@@ -193,7 +193,7 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
             Member {
                 name: "Victor".to_string(),
                 role: "Software Engineer".to_string(),
-                image: "https://metadata.biyard.co/members/victor.png".to_string(),
+                image: "https://dev.biyard.co/members/victor.png".to_string(),
                 description: "".to_string(),
                 email: Some("victor@biyard.co".to_string()),
                 github: None,
@@ -203,7 +203,7 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
             Member {
                 name: "Ryan".to_string(),
                 role: "Software Engineer".to_string(),
-                image: "https://metadata.biyard.co/members/victor.png".to_string(),
+                image: "https://dev.biyard.co/members/victor.png".to_string(),
                 description: "".to_string(),
                 email: Some("ryan@biyard.co".to_string()),
                 github: None,
@@ -213,7 +213,7 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
             Member {
                 name: "Jace".to_string(),
                 role: "UX/UI Designer".to_string(),
-                image: "https://metadata.biyard.co/members/jace.png".to_string(),
+                image: "https://dev.biyard.co/members/jace.png".to_string(),
                 description: "".to_string(),
                 email: Some("ryan@biyard.co".to_string()),
                 github: None,
@@ -223,7 +223,7 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
             Member {
                 name: "Jihwan".to_string(),
                 role: "Researcher".to_string(),
-                image: "https://metadata.biyard.co/members/victor.png".to_string(),
+                image: "https://dev.biyard.co/members/victor.png".to_string(),
                 description: "Ji-hwan is responsible for analyzing blockchain market trends and technologies. He also manages the company's investments and partnerships, contributing to strategic growth and collaboration.".to_string(),
                 email: Some("jihwan@biyard.co".to_string()),
                 github: None,

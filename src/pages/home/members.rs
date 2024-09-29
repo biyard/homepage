@@ -30,7 +30,8 @@ pub fn MemberCard(member: Member, class: Option<String>) -> Element {
         div {
             class: "group w-full h-full",
             div {
-                class: format!("rounded-[8px] h-[450px] transition-all duration-1000 [backface-visibility:hidden] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] flex flex-col gap-[10px] items-center justify-center bg-cover bg-[url('{}')] {}", member.image.clone(), class.unwrap_or_default()),
+                style: format!("background-image: url('{}')", member.image.clone()),
+                class: format!("rounded-[8px] h-[450px] transition-all duration-1000 [backface-visibility:hidden] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] flex flex-col gap-[10px] items-center justify-center bg-cover {}", class.unwrap_or_default()),
                 div {
                     class: "w-full h-full bg-[#000000] bg-opacity-50 flex flex-col items-center justify-center [backface-visibility:hidden] rounded-[8px]",
                     div {

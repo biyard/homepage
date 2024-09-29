@@ -50,9 +50,12 @@ cdk-deploy:
 	yes | $(BUILD_ENV) cdk deploy --require-approval never $(AWS_FLAG)
 
 clean:
-	rm -rf dist
+	rm -rf dist assets/tailwind.css
 
-deploy: build-lambda cdk-build cdk-deploy s3-sync
+dist/public/members:
+	cp -r assets/members dist/public
+
+deploy: build-lambda cdk-build cdk-deploy dist/public/members s3-sync
 
 s3-sync:
 	aws s3 sync dist/public s3://$(DOMAIN) $(AWS_FLAG) --delete

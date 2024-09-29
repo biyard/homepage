@@ -28,10 +28,10 @@ pub fn TopMenu() -> Element {
                         },
                         icons::download {}
                     }
-                    OutlinedButton {
-                        onclick: move |_| sleep(Duration::from_secs(2)),
-                        "SIGN IN"
-                    }
+                    // OutlinedButton {
+                    //     onclick: move |_| sleep(Duration::from_secs(2)),
+                    //     "SIGN IN"
+                    // }
                 }
             }
         }

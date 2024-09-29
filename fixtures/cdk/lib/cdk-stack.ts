@@ -65,7 +65,6 @@ export class CdkStack extends cdk.Stack {
       handler: "bootstrap",
       environment: {
         NO_COLOR: "true",
-        ASSETS_PATH: "./",
       },
       // NOTE: Connection for Redis
       vpc,
@@ -98,6 +97,18 @@ export class CdkStack extends cdk.Stack {
       },
       additionalBehaviors: {
         "/assets/*": {
+          origin: s3Origin,
+          cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        },
+        "/*.jpg": {
+          origin: s3Origin,
+          cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        },
+        "/*.avif": {
+          origin: s3Origin,
+          cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        },
+        "/*.png": {
           origin: s3Origin,
           cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
         },

@@ -25,7 +25,7 @@ setup:
 	cargo install dioxus-cli --version 0.6.0-alpha.2
 	npm install -g aws-cdk tailwindcss
 
-run:
+run: assets/tailwind.css
 	dx serve -i false
 
 build-lambda: clean assets/tailwind.css
@@ -55,7 +55,7 @@ clean:
 deploy: build-lambda cdk-build cdk-deploy s3-sync
 
 s3-sync:
-	aws s3 sync dist s3://$(DOMAIN) $(AWS_FLAG) --delete
+	aws s3 sync dist/public s3://$(DOMAIN) $(AWS_FLAG) --delete
 	aws cloudfront create-invalidation --distribution-id $(CDN_ID) --paths "/*" $(AWS_FLAG) > /dev/null
 
 run-api: build-lambda cdk-build sam-local-api

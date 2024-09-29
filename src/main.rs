@@ -83,6 +83,10 @@ fn App() -> Element {
             rel: "stylesheet",
             href: asset!("./assets/main.css")
         }
+        head::Link {
+            rel: "stylesheet",
+            href: asset!("./assets/tailwind.css")
+        }
         load_tailwindcss {}
         Router::<Route> {}
     }
@@ -102,10 +106,5 @@ fn load_tailwindcss() -> Element {
 #[cfg(feature = "lambda")]
 #[allow(dead_code)]
 fn load_tailwindcss() -> Element {
-    rsx! {
-        head::Link {
-            rel: "stylesheet",
-            href: asset!("./assets/tailwind.css")
-        }
-    }
+    rsx! {}
 }

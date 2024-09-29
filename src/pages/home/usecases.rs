@@ -26,7 +26,7 @@ pub(super) fn UseCases() -> Element {
                     }
                     OutlinedButton {
                         onclick: move |_| {},
-                        "GET INTO IT"
+                        "COMING SOON"
                     }
                 }
             }

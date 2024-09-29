@@ -55,7 +55,10 @@ clean:
 dist/public/members:
 	cp -r assets/members dist/public
 
-deploy: build-lambda cdk-build cdk-deploy dist/public/members s3-sync
+dist/public/services:
+	cp -r assets/services dist/public
+
+deploy: build-lambda cdk-build cdk-deploy dist/public/members dist/public/services s3-sync
 
 s3-sync:
 	aws s3 sync dist/public s3://$(DOMAIN) $(AWS_FLAG) --delete

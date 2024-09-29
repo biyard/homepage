@@ -11,7 +11,8 @@ pub(super) fn UseCases() -> Element {
             div {
                 class: "w-full 2xl:w-[1440px] m-auto grid grid-cols-3 flex flex-row py-[20px] px-[100px] justify-between items-center bg-[radial-gradient(96.21%_121.53%_at_97.68%_89.39%,#1C3E35_0%,#5B9883_100%)] rounded-[20px]",
                 div {
-                    class: "col-span-0 md:col-span-1 2xl:col-span-2 flex flex-row justify-start items-center gap-[10px]",
+                    style: format!("background-image: url('{}');", asset!("./assets/images/usecases.png")),
+                    class: "col-span-0 h-full md:col-span-1 2xl:col-span-2 flex flex-row justify-start items-center gap-[10px] bg-contain bg-no-repeat",
                 }
 
                 div {

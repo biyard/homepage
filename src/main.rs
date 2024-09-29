@@ -46,11 +46,15 @@ fn main() {
     .expect("failed to init logger");
 
     tracing::info!("starting app");
-    launch(App);
+    dioxus_aws::launch(App);
 }
 
 fn App() -> Element {
     rsx! {
+        head::Meta {
+            name: "description",
+            content: "Biyard is a leading blockchain technology company focused on building decentralized solutions that drive innovation and transparency. From secure digital content rights protection to enhancing the transparency, trust, and efficiency of public polls and surveys, we empower governments, enterprises, and developers to unlock the full potential of Web3. Our flagship platform, d.AGIT, pioneers new ways to safeguard and manage digital assets with trust and security. At Biyard, we’re shaping the future of a decentralized digital economy."
+        }
         for href in vec![
             "https://fonts.googleapis.com",
             "https://fonts.gstatic.com",

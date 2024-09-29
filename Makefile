@@ -1,12 +1,12 @@
 VERSION ?= v0.1.0
 COMMIT ?= $(shell git rev-parse --short HEAD)
 ENV ?= local
+SERVICE ?= homepage
 
 ifeq ("$(ENV)","prod")
 	LOG_LEVEL ?= info
 	DOMAIN ?= biyard.co
 	REDIRECT_URI ?= https://$(DOMAIN)
-	AWS_DYNAMODB_TABLE ?= "biyard-prod"
 endif
 
 ifeq ("$(ENV)","dev")
@@ -16,7 +16,9 @@ endif
 
 LOG_LEVEL ?= debug
 REDIRECT_URI ?= http://localhost:8080
-AWS_DYNAMODB_TABLE ?= "biyard-dev"
+AWS_DYNAMODB_TABLE ?= $(SERVICE)-$(ENV)
+
+BUILD_ENV ?= LOG_LEVEL=$(LOG_LEVEL) REDIRECT_URI=$(REDIRECT_URI) AWS_DYNAMODB_TABLE=$(AWS_DYNAMODB_TABLE) VERSION=$(VERSION) COMMIT=$(COMMIT) ENV=$(ENV) SERVICE=$(SERVICE) TABLE_NAME=$(AWS_DYNAMODB_TABLE) DOMAIN=$(DOMAIN)
 
 .PHONY: setup run
 setup:
@@ -26,17 +28,17 @@ setup:
 run:
 	dx serve -i false
 
-.ONESHELL:
 build-lambda: clean assets/tailwind.css
 	$(BUILD_ENV) dx build --release --platform fullstack --server-feature lambda
 	mv dist/$(SERVICE) dist/bootstrap
 
+assets/tailwind.css:
+	tailwindcss -i ./input.css -o ./assets/tailwind.css --minify
+
+.ONESHELL: cdk-build cdk-deploy fixtures/cdk/node_modules
 fixtures/cdk/node_modules:
 	cd fixtures/cdk
 	npm install
-
-assets/tailwind.css:
-	tailwindcss -i ./input.css -o ./assets/tailwind.css --minify
 
 cdk-build: fixtures/cdk/node_modules
 	cd fixtures/cdk
@@ -47,6 +49,9 @@ cdk-deploy:
 	cd fixtures/cdk
 	$(BUILD_ENV) cdk bootstrap $(AWS_FLAG)
 	yes | $(BUILD_ENV) cdk deploy --require-approval never $(AWS_FLAG)
+
+clean:
+	rm -rf dist
 
 deploy: build-lambda cdk-build cdk-deploy s3-sync
 

@@ -26,7 +26,6 @@ export class CdkStack extends cdk.Stack {
     let subnet1Id = process.env.SUBNET1_ID || "";
     let subnet2Id = process.env.SUBNET2_ID || "";
 
-
     const assetsBucket = new s3.Bucket(this, "Bucket", {
       bucketName: domain,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -57,16 +56,8 @@ export class CdkStack extends cdk.Stack {
       securityGroupId,
     );
 
-    const subnet1 = ec2.Subnet.fromSubnetId(
-      this,
-      "subnet1",
-      subnet1Id,
-    );
-    const subnet2 = ec2.Subnet.fromSubnetId(
-      this,
-      "subnet2",
-      subnet2Id,
-    );
+    const subnet1 = ec2.Subnet.fromSubnetId(this, "subnet1", subnet1Id);
+    const subnet2 = ec2.Subnet.fromSubnetId(this, "subnet2", subnet2Id);
 
     const func = new lambda.Function(this, "Function", {
       runtime: lambda.Runtime.PROVIDED_AL2023,

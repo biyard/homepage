@@ -26,15 +26,11 @@ pub(super) fn Members() -> Element {
 
 #[component]
 pub fn MemberCard(member: Member, class: Option<String>) -> Element {
-    let mut flipped = use_signal(|| false);
-
     rsx! {
         div {
             class: "group w-full h-full",
             div {
                 class: format!("rounded-[8px] h-[450px] transition-all duration-1000 [backface-visibility:hidden] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] flex flex-col gap-[10px] items-center justify-center bg-cover bg-[url('{}')] {}", member.image.clone(), class.unwrap_or_default()),
-                onmouseenter: move |_| flipped.set(true),
-                onmouseleave: move |_| flipped.set(false),
                 div {
                     class: "w-full h-full bg-[#000000] bg-opacity-50 flex flex-col items-center justify-center [backface-visibility:hidden]",
                     div {

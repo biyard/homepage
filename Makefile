@@ -64,4 +64,4 @@ s3-sync:
 run-api: build-lambda cdk-build sam-local-api
 
 sam-local-api:
-	sam local start-api -t ./fixtures/cdk/cdk.out/BiyardStack.template.json
+	sam local start-api -t ./fixtures/cdk/cdk.out/Stack.template.json

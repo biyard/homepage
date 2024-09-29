@@ -19,7 +19,7 @@ pub mod usecases;
 
 #[component]
 pub fn Home() -> Element {
-    let ctrl = controller::Controller::init();
+    let ctrl = controller::Controller::init()?;
 
     rsx! {
         if !ctrl.is_loaded() {

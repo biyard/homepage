@@ -24,7 +24,7 @@ pub struct GetHomeResponse {
 }
 
 #[server(endpoint = "/home", input = GetUrl, output = Json)]
-pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
+pub async fn get_home_from_server() -> Result<GetHomeResponse, ServerFnError> {
     tracing::debug!("GET /home");
 
     Ok(GetHomeResponse {
@@ -384,7 +384,7 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
                 email: Some("victor@biyard.co".to_string()),
                 github: Some("https://github.com/victor138128".to_string()),
                 linkedin: None,
-                web: None,
+                web: Some("https://blog.naver.com/yepp0517".to_string()),
             },
             Member {
                 name: "Ryan".to_string(),
@@ -403,7 +403,7 @@ pub async fn get_home() -> Result<GetHomeResponse, ServerFnError> {
                 description: "".to_string(),
                 email: Some("ryan@biyard.co".to_string()),
                 github: Some("https://github.com/RyanCho-0".to_string()),
-                linkedin: None,
+                linkedin: Some("https://www.linkedin.com/in/jace0615".to_string()),
                 web: None,
             },
             Member {

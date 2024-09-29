@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 use dioxus_logger::tracing;
 
 use crate::{
-    apis::home::get_home,
+    apis::home::get_home_from_server,
     models::{
         feed::Feed, highlight_service::HighlightService, models::Member, service::Service,
         slogan::Slogan,
@@ -21,29 +21,32 @@ pub(super) struct Controller {
 }
 
 impl Controller {
-    pub fn init() -> Self {
+    pub fn init() -> Result<Self, RenderError> {
         let mut ctrl = Self::default();
         use_context_provider(|| ctrl);
 
-        let _ = use_server_future(move || async move {
-            match get_home().await {
-                Ok(result) => {
-                    ctrl.slogan.set(Some(result.slogan));
-                    ctrl.services.set(Some(result.services));
-                    ctrl.highlight_service.set(Some(result.highlight_service));
-                    ctrl.feeds.set(Some(result.feeds));
-                    ctrl.members.set(Some(result.members));
-                }
-                Err(err) => {
-                    tracing::error!("Failed to get home data: {:?}", err);
-                }
-            };
-            tracing::debug!("Home data loaded");
+        let res = use_server_future(get_home_from_server)?;
+        match res.value()() {
+            Some(Ok(result)) => {
+                ctrl.slogan.set(Some(result.slogan));
+                ctrl.services.set(Some(result.services));
+                ctrl.highlight_service.set(Some(result.highlight_service));
+                ctrl.feeds.set(Some(result.feeds));
+                ctrl.members.set(Some(result.members));
+            }
+            Some(Err(err)) => {
+                tracing::error!("Failed to get home data: {:?}", err);
+            }
+            _ => {
+                tracing::error!("Failed to get home data:");
+            }
+        };
+        tracing::debug!("Home data loaded");
 
-            ctrl.loaded.set(true);
-        });
+        ctrl.loaded.set(true);
+        // });
 
-        ctrl
+        Ok(ctrl)
     }
 
     pub fn use_controller() -> Self {

@@ -26,7 +26,7 @@ setup:
 	npm install -g aws-cdk tailwindcss
 
 run: assets/tailwind.css
-	dx serve -i false
+	$(BUILD_ENV) dx serve -i false
 
 build-lambda: clean assets/tailwind.css
 	$(BUILD_ENV) dx build --release --platform fullstack --server-feature lambda

@@ -47,15 +47,19 @@ pub fn FilledButton(
     children: Element,
     onclick: Option<EventHandler<MouseEvent>>,
     shape: Option<ButtonShape>,
-    class: Option<String>,
+    background_color: Option<String>,
+    text_color: Option<String>,
 ) -> Element {
     let mut is_loading = use_signal(|| false);
     let shape = shape.unwrap_or(ButtonShape::RoundedRect);
-    let class = format!("{} text-[13px] font-regular bg-white hover:bg-[#03AB79] hover:text-white hover:border-white cursor-pointer transition-all duration-300 ease-in-out flex justify-center items-center gap-[5px] active:bg-[#03AB79] active:text-white {}", match class {
-        Some(class) => class,
-        None => "text-[#6E4EA2]".to_string(),
+    let class = format!("text-[13px] font-regular {} hover:bg-[#03AB79] hover:text-white hover:border-white cursor-pointer transition-all duration-300 ease-in-out flex justify-center items-center gap-[5px] active:bg-[#03AB79] active:text-white {} {}", match background_color {
+        Some(bg_class) => bg_class,
+        None => "bg-white".to_string(),
 
-    },  match shape {
+    }, match text_color {
+        Some(text_color) => text_color,
+        None => "text-[#6E4EA2]".to_string(),
+    }, match shape {
         ButtonShape::RoundedRect => "rounded-[10px] px-[15px] py-[10px]",
         ButtonShape::Circle => "rounded-full p-[6.37px]",
     });

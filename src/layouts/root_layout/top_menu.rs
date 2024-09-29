@@ -3,10 +3,14 @@ use std::{thread::sleep, time::Duration};
 
 use dioxus::prelude::*;
 
-use crate::prelude::*;
+use crate::{
+    components::download_popup::DownloadPopup, prelude::*, services::popup_service::PopupService,
+};
 
 #[component]
 pub fn TopMenu() -> Element {
+    let mut popup = PopupService::use_popup_service();
+
     rsx! {
         div {
             class:"w-full backdrop-blur-[20px] bg-[#21344D]/50 p-[10px] fixed top-0 left-0 z-[100]",
@@ -19,7 +23,9 @@ pub fn TopMenu() -> Element {
                 div {
                     class: "flex flex-row items-center gap-[20px]",
                     IconButton {
-                        onclick: move |_| sleep(Duration::from_secs(2)),
+                        onclick: move |_| {
+                            popup.open(DownloadPopup());
+                        },
                         icons::download {}
                     }
                     OutlinedButton {

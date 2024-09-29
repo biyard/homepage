@@ -56,6 +56,7 @@ jobs:
           SUBNET1_ID: ${{ secrets.AWS_SUBNET1_ID }}
           SUBNET2_ID: ${{ secrets.AWS_SUBNET2_ID }}
           HOSTED_ZONE_ID: ${{ secrets.AWS_ROUTE53_BIYARD_CO }}
+          CDN_ID: ${{ secrets.AWS_HOMEPAGE_CDN_ID }}
         run: |
           npm install -g aws-cdk tailwindcss
           make deploy

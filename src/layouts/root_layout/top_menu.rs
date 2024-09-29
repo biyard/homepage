@@ -1,5 +1,5 @@
 #![allow(non_snake_case)]
-use std::{thread::sleep, time::Duration};
+// use std::{thread::sleep, time::Duration};
 
 use dioxus::prelude::*;
 

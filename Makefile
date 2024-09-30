@@ -4,7 +4,7 @@ ENV ?= local
 SERVICE ?= homepage
 
 ifeq ("$(ENV)","prod")
-	LOG_LEVEL ?= info
+	LOG_LEVEL ?= error
 	DOMAIN ?= biyard.co
 	REDIRECT_URI ?= https://$(DOMAIN)
 endif

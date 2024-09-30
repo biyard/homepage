@@ -423,7 +423,7 @@ pub fn get_home() -> GetHomeResponse {
                 name: "Henry".to_string(),
                 role: "Software Engineer".to_string(),
                 image: "https://dev.biyard.co/members/henry.png".to_string(),
-                description: "Ji-hwan is responsible for analyzing blockchain market trends and technologies. He also manages the company's investments and partnerships, contributing to strategic growth and collaboration.".to_string(),
+                description: "Henry is a full-stack software engineer at Biyard. Currently he is working to solve complex problems with creative and efficient code. It covers various programming languages and technology stacks, and he is especially interested in backend development and system design.".to_string(),
                 email: Some("henry@biyard.co".to_string()),
                 github: Some("https://github.com/2miwon".to_string()),
                 linkedin: Some("https://www.linkedin.com/in/2miwon".to_string()),

@@ -1,9 +1,15 @@
 #![allow(non_snake_case)]
-use crate::components::filled_button::FilledButton;
+use crate::{
+    apis::users::{keep_updates, KeepUpdatesRequest},
+    components::filled_button::FilledButton,
+};
 use dioxus::prelude::*;
+use dioxus_logger::tracing;
 
 #[component]
 pub fn DownloadPopup() -> Element {
+    let mut email = use_signal(|| "".to_string());
+
     rsx! {
         div {
             class: "grid grid-rows-5 w-[370px] h-[500px] drop-shadow-[0px_0px_20px_rgba(0,0,0,0.4)] rounded-[20px] overflow-hidden",
@@ -28,20 +34,42 @@ pub fn DownloadPopup() -> Element {
                     class: "flex flex-col w-full gap-[10px]",
                     input {
                         class: "w-full h-[52px] bg-transparent rounded-[10px] px-[24px] py-[14px] text-[16px] leading-[24px] font-regular border-[1px] border-[#21344C] focus:outline-none focus:border-[#03AB79] transition-all duration-300 ease-in-out text-[#21344C]",
-                        placeholder: "Email (optional)"
+                        placeholder: "Email (optional)",
+                        onchange: move |e| email.set(e.value()),
+
                     }
                     div {
                         class: "flex flex-row justify-between items-center",
                         FilledButton {
                             background_color: "bg-[#21344C]",
                             text_color: "text-white",
-                            onclick: |_| {},
+                            onclick: move |_| {
+                                spawn(async move {
+                                    let email = email();
+                                    match keep_updates(KeepUpdatesRequest { email }).await {
+                                        Ok(_) => {},
+                                        Err(_) => {
+                                            tracing::error!("Failed to subscribe!");
+                                        }
+                                    };
+                                });
+                            },
                             "BROCHURE"
                         }
                         FilledButton {
                             background_color: "bg-[#21344C]",
                             text_color: "text-white",
-                            onclick: |_| {},
+                            onclick: move |_| {
+                                spawn(async move {
+                                    let email = email();
+                                    match keep_updates(KeepUpdatesRequest { email }).await {
+                                        Ok(_) => {},
+                                        Err(_) => {
+                                            tracing::error!("Failed to subscribe!");
+                                        }
+                                    };
+                                });
+                            },
                             "COMPANY DECK"
                         }
                     }

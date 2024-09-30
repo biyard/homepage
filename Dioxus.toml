@@ -11,12 +11,14 @@ default_platform = "fullstack"
 out_dir = "dist"
 
 # resource (assets) file folder
-asset_dir = "assets"
+# asset_dir = "assets"
 
 [web.app]
 
 # HTML title tag content
 title = "Biyard"
+
+# base_path = "assets"
 
 [web.watcher]
 
@@ -24,7 +26,7 @@ title = "Biyard"
 reload_html = true
 
 # which files or dirs will be watcher monitoring
-watch_path = ["src", "assets"]
+watch_path = ["src"]
 
 [web.resource.dev]
 

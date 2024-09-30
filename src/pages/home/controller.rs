@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 use dioxus_logger::tracing;
 
 use crate::{
-    apis::home::get_home_from_server,
+    apis::home::get_home,
     models::{
         feed::Feed, highlight_service::HighlightService, models::Member, service::Service,
         slogan::Slogan,
@@ -25,25 +25,29 @@ impl Controller {
         let mut ctrl = Self::default();
         use_context_provider(|| ctrl);
 
-        let res = use_server_future(get_home_from_server)?;
-        match res.value()() {
-            Some(Ok(result)) => {
-                ctrl.slogan.set(Some(result.slogan));
-                ctrl.services.set(Some(result.services));
-                ctrl.highlight_service.set(Some(result.highlight_service));
-                ctrl.feeds.set(Some(result.feeds));
-                ctrl.members.set(Some(result.members));
-            }
-            Some(Err(err)) => {
-                tracing::error!("Failed to get home data: {:?}", err);
-            }
-            _ => {
-                tracing::error!("Failed to get home data:");
-            }
-        };
+        // let res = use_server_future(get_home_from_server)?;
+        // match res.value()() {
+        //     Some(Ok(result)) => {
+        let result = get_home();
+        ctrl.slogan.set(Some(result.slogan));
+        ctrl.services.set(Some(result.services));
+        ctrl.highlight_service.set(Some(result.highlight_service));
+        ctrl.feeds.set(Some(result.feeds));
+        ctrl.members.set(Some(result.members));
+        tracing::debug!("all data fetched");
+        ctrl.loaded.set(true);
+
+        //     }
+        //     Some(Err(err)) => {
+        //         tracing::error!("Failed to get home data: {:?}", err);
+        //     }
+        //     _ => {
+        //         tracing::error!("Failed to get home data:");
+        //     }
+        // };
+
         tracing::debug!("Home data loaded");
 
-        ctrl.loaded.set(true);
         // });
 
         Ok(ctrl)

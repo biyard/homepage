@@ -26,8 +26,11 @@ pub struct GetHomeResponse {
 #[server(endpoint = "/home", input = GetUrl, output = Json)]
 pub async fn get_home_from_server() -> Result<GetHomeResponse, ServerFnError> {
     tracing::debug!("GET /home");
+    Ok(get_home())
+}
 
-    Ok(GetHomeResponse {
+pub fn get_home() -> GetHomeResponse {
+    GetHomeResponse {
         slogan: Slogan {
             title: "Bringing Blockchain\nto Real-World Challenges".to_string(),
             description: "Biyard is a leading blockchain technology company focused on building decentralized solutions that drive innovation and transparency. From secure digital content rights protection to enhancing the transparency, trust, and efficiency of public polls and surveys, we empower governments, enterprises, and developers to unlock the full potential of Web3. Our flagship platform, d.AGIT, pioneers new ways to safeguard and manage digital assets with trust and security. At Biyard, we’re shaping the future of a decentralized digital economy.".to_string(),
@@ -417,5 +420,5 @@ pub async fn get_home_from_server() -> Result<GetHomeResponse, ServerFnError> {
                 web: None,
             },
         ],
-    })
+    }
 }

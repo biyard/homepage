@@ -62,6 +62,8 @@ jobs:
           rustc --version
           rustup check
           dx --version
+          rustup target list | grep installed
+          env
           npm install -g aws-cdk tailwindcss
           make deploy
 

@@ -48,10 +48,10 @@ pub fn DownloadPopup() -> Element {
 
                     }
                     div {
-                        class: "flex flex-row justify-between items-center",
+                        class: "flex flex-row justify-between items-center grid grid-cols-2 gap-[10px]",
                         FilledButton {
                             background_color: "bg-[#21344C]",
-                            text_color: "text-white",
+                            text_color: "text-white col-span-1",
                             onclick: move |_| {
                                 spawn(async move {
                                     let email = email();
@@ -74,7 +74,7 @@ pub fn DownloadPopup() -> Element {
                         }
                         FilledButton {
                             background_color: "bg-[#21344C]",
-                            text_color: "text-white",
+                            text_color: "text-white col-span-1",
                             onclick: move |_| {
                                 spawn(async move {
                                     let email = email();

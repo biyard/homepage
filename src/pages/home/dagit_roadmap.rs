@@ -23,7 +23,10 @@ pub(super) fn DagitRoadmap() -> Element {
                         "{service.name}"
                     }
                     OutlinedButton {
-                        onclick: move |_| {},
+                        onclick: move |_| {
+                            #[cfg(feature = "web")]
+                            let _ = web_sys::window().unwrap().open_with_url_and_target("https://dagit.club", "_blank");
+                        },
                         shape: ButtonShape::Circle,
                         icons::external_link {}
                     }

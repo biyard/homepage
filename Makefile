@@ -69,7 +69,10 @@ dist/public/members:
 dist/public/services:
 	cp -r assets/services dist/public
 
-deploy: build-lambda cdk-build cdk-deploy dist/public/members dist/public/services s3-sync
+dup-assets:
+	cp -r dist/public/*.css dist/public/*.avif dist/public/*.ico dist/public/assets/
+
+deploy: build-lambda cdk-build cdk-deploy dist/public/members dist/public/services dup-assets s3-sync
 
 s3-sync:
 	aws s3 sync dist/public s3://$(DOMAIN) $(AWS_FLAG) --delete

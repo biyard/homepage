@@ -39,7 +39,7 @@ export class CdkStack extends cdk.Stack {
 
     const table = new dynamodb.Table(this, "DynamoDB", {
       partitionKey: {
-        name: "key",
+        name: "id",
         type: dynamodb.AttributeType.STRING,
       },
       tableName,

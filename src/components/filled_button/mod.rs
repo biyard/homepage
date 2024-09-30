@@ -2,8 +2,6 @@
 use dioxus::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::prelude::icons;
-
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum ButtonShape {
     #[serde(rename = "rounded-rect")]
@@ -52,7 +50,7 @@ pub fn FilledButton(
 ) -> Element {
     let mut is_loading = use_signal(|| false);
     let shape = shape.unwrap_or(ButtonShape::RoundedRect);
-    let class = format!("text-[13px] font-regular {} hover:bg-[#03AB79] hover:text-white hover:border-white cursor-pointer transition-all duration-300 ease-in-out flex justify-center items-center gap-[5px] active:bg-[#03AB79] active:text-white {} {}", match background_color {
+    let class = format!("text-[13px] font-regular {} hover:bg-[#03AB79] hover:text-white hover:border-white cursor-pointer transition-all duration-300 ease-in-out flex justify-center items-center gap-[5px] active:bg-[#03AB79] active:text-white {} {} {}", match background_color {
         Some(bg_class) => bg_class,
         None => "bg-white".to_string(),
 
@@ -62,7 +60,7 @@ pub fn FilledButton(
     }, match shape {
         ButtonShape::RoundedRect => "rounded-[10px] px-[15px] py-[10px]",
         ButtonShape::Circle => "rounded-full p-[6.37px]",
-    });
+    }, if is_loading() { "animate-spin" } else { "" });
 
     rsx! {
         div {
@@ -74,10 +72,10 @@ pub fn FilledButton(
                     is_loading.set(false);
                 }
             },
-            if is_loading() {
-                icons::spin { }
-            } else {
+            if !is_loading() {
                 {children}
+            } else {
+                "Loading..."
             }
         }
     }

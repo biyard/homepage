@@ -15,10 +15,9 @@ pub struct KeepUpdatesRequest {
 pub async fn keep_updates(req: KeepUpdatesRequest) -> Result<(), ServerFnError> {
     tracing::debug!("/users/keep-updates: {:?}", req);
     use crate::models::user::User;
-    use slog::o;
 
     let user = User {
-        key: req.email.to_string(),
+        id: req.email.to_string(),
         email: req.email.to_string(),
         role: crate::models::user::Role::Subscriber,
     };
@@ -26,7 +25,7 @@ pub async fn keep_updates(req: KeepUpdatesRequest) -> Result<(), ServerFnError> 
     let cli = easy_dynamodb::Client::new(
         slog::Logger::root(
             slog::Discard,
-            o!("service" => "homepage", "api"=>"/users/keep-updates"),
+            slog::o!("service" => "homepage", "api"=>"/users/keep-updates"),
         ),
         option_env!("AWS_ACCESS_KEY_ID")
             .expect("AWS_ACCESS_KEY_ID is required")
@@ -40,13 +39,26 @@ pub async fn keep_updates(req: KeepUpdatesRequest) -> Result<(), ServerFnError> 
         option_env!("TABLE_NAME")
             .expect("TABLE_NAME is required")
             .to_string(),
-        "key".to_string(),
+        "id".to_string(),
         None,
         None,
-    )
-    .await;
+    );
 
-    cli.create(user.clone()).await?;
+    tracing::debug!(
+        "creating user to {}",
+        option_env!("TABLE_NAME")
+            .expect("TABLE_NAME is required")
+            .to_string(),
+    );
+    match cli.create(user.clone()).await {
+        Ok(_) => {
+            tracing::debug!("user created: {:?}", user);
+        }
+        Err(e) => {
+            tracing::error!("failed to create user: {:?}", e);
+            return Err(ServerFnError::ServerError(e.to_string()));
+        }
+    };
 
     Ok(())
 }

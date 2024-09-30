@@ -10,7 +10,7 @@ pub enum Role {
 
 #[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub struct User {
-    pub key: String,
+    pub id: String,
     pub email: String,
     pub role: Role,
 }

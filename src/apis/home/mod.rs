@@ -14,7 +14,7 @@ use crate::models::{
     slogan::Slogan,
 };
 
-#[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize, Default)]
 pub struct GetHomeResponse {
     pub slogan: Slogan,
     pub services: Vec<Service>,

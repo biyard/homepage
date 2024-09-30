@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 use dioxus_logger::tracing;
 
 use crate::{
-    apis::home::get_home,
+    apis::home::{get_home, GetHomeResponse},
     models::{
         feed::Feed, highlight_service::HighlightService, models::Member, service::Service,
         slogan::Slogan,
@@ -12,12 +12,13 @@ use crate::{
 
 #[derive(Debug, Clone, Copy, Default)]
 pub(super) struct Controller {
-    pub slogan: Signal<Slogan>,
+    // pub slogan: Signal<Option<Slogan>>,
     pub loaded: Signal<bool>,
-    pub services: Signal<Vec<Service>>,
-    pub highlight_service: Signal<HighlightService>,
-    pub feeds: Signal<Vec<Feed>>,
-    pub members: Signal<Vec<Member>>,
+    // pub services: Signal<Vec<Service>>,
+    // pub highlight_service: Signal<Option<HighlightService>>,
+    // pub feeds: Signal<Vec<Feed>>,
+    // pub members: Signal<Vec<Member>>,
+    pub result: Signal<Option<GetHomeResponse>>,
 }
 
 impl Controller {
@@ -26,11 +27,8 @@ impl Controller {
         use_context_provider(|| ctrl);
 
         let result = get_home();
-        ctrl.slogan.set(result.slogan);
-        ctrl.services.set(result.services);
-        ctrl.highlight_service.set(result.highlight_service);
-        ctrl.feeds.set(result.feeds);
-        ctrl.members.set(result.members);
+        ctrl.result.set(Some(result.clone()));
+        ctrl.loaded.set(true);
 
         tracing::debug!("Home data loaded");
 
@@ -46,22 +44,22 @@ impl Controller {
     }
 
     pub fn slogan(&self) -> Slogan {
-        (self.slogan)()
+        (self.result)().unwrap_or_default().slogan
     }
 
     pub fn services(&self) -> Vec<Service> {
-        (self.services)()
+        (self.result)().unwrap_or_default().services
     }
 
     pub fn highlight_service(&self) -> HighlightService {
-        (self.highlight_service)()
+        (self.result)().unwrap_or_default().highlight_service
     }
 
     pub fn feeds(&self) -> Vec<Feed> {
-        (self.feeds)()
+        (self.result)().unwrap_or_default().feeds
     }
 
     pub fn members(&self) -> Vec<Member> {
-        (self.members)()
+        (self.result)().unwrap_or_default().members
     }
 }

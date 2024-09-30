@@ -1,4 +1,5 @@
 pub mod home;
+pub mod users;
 
 use dioxus::fullstack::prelude::*;
 use server_fn::codec::{GetUrl, Json};

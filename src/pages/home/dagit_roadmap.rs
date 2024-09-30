@@ -23,7 +23,10 @@ pub(super) fn DagitRoadmap() -> Element {
                         "{service.name}"
                     }
                     OutlinedButton {
-                        onclick: move |_| {},
+                        onclick: move |_| {
+                            #[cfg(feature = "web")]
+                            let _ = web_sys::window().unwrap().open_with_url_and_target("https://dagit.club", "_blank");
+                        },
                         shape: ButtonShape::Circle,
                         icons::external_link {}
                     }
@@ -35,7 +38,8 @@ pub(super) fn DagitRoadmap() -> Element {
             }
 
             div {
-                class: "flex flex-row gap-[30px]",
+                style: "scrollbar-width: none;",
+                class: "flex flex-row gap-[30px] w-full justify-center overflow-x-auto px-[5px]",
                 FeatureButton {
                     completed: true,
                     no_features: service.past_features.len(),

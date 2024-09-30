@@ -10,7 +10,7 @@ pub fn FeatureButton(completed: Option<bool>, no_features: usize, text: String) 
                 class: "flex flex-col justify-end items-end h-[160px]",
                 if completed.unwrap_or(false) {
                     img {
-                        src: asset!("./assets/images/done.png"),
+                        src: asset!(image("assets/images/done.png")),
                         class: "w-[25px] h-[25px]",
                     }
                 }
@@ -72,7 +72,7 @@ pub fn ProgressFeature(
                     class: "flex flex-col justify-end items-end h-[160px]",
                     if completed_date.is_some() {
                         img {
-                            src: asset!("./assets/images/done.png"),
+                            src: asset!(image("assets/images/done.png")),
                              class: "w-[25px] h-[25px]",
                         }
                     }

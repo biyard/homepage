@@ -8,7 +8,12 @@ pub mod layouts {
     pub mod root_layout;
 }
 
+pub mod services {
+    pub mod popup_service;
+}
+
 pub mod components {
+    pub mod download_popup;
     pub mod feature_button;
     pub mod filled_button;
     pub mod icon_button;
@@ -33,6 +38,7 @@ pub mod models;
 use dioxus::prelude::*;
 use dioxus_logger::tracing::{self, Level};
 use routes::Route;
+use services::popup_service::PopupService;
 
 fn main() {
     dioxus_logger::init(match option_env!("LOG_LEVEL") {
@@ -50,6 +56,8 @@ fn main() {
 }
 
 fn App() -> Element {
+    PopupService::init();
+
     rsx! {
         head::Meta {
             name: "description",
@@ -77,11 +85,15 @@ fn App() -> Element {
         head::Link {
             rel: "icon",
             r#type: "image/x-icon",
-            href: asset!("./assets/favicon.ico"),
+            href: asset!("assets/favicon.ico"),
         }
         head::Link {
             rel: "stylesheet",
-            href: asset!("./assets/main.css")
+            href: asset!("assets/main.css")
+        }
+        head::Link {
+            rel: "stylesheet",
+            href: asset!("assets/tailwind.css")
         }
         load_tailwindcss {}
         Router::<Route> {}
@@ -102,10 +114,5 @@ fn load_tailwindcss() -> Element {
 #[cfg(feature = "lambda")]
 #[allow(dead_code)]
 fn load_tailwindcss() -> Element {
-    rsx! {
-        head::Link {
-            rel: "stylesheet",
-            href: asset!("./assets/tailwind.css")
-        }
-    }
+    rsx! {}
 }

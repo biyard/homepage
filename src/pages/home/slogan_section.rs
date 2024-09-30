@@ -12,17 +12,17 @@ pub(super) fn SloganSection() -> Element {
         div {
             class: "my-[190px] mx-auto flex flex-col justify-center gap-[10px] p-[20px]",
             div {
-                class: "text-[110px] font-bold text-white",
+                class: "text-[40px] text-center lg:text-[52px] lg:text-left 2xl:text-[96px] font-bold text-white",
                 "{headlines[0]}"
             }
             div {
-                class: "pl-[240px] flex flex-col gap-[20px]",
+                class: "lg:pl-[110px] lg:text-left text-center 2xl:text-left flex flex-col gap-[20px]",
                 div {
-                    class: "text-[110px] font-bold text-white",
+                    class: "text-[40px] lg:text-[52px] 2xl:text-[96px] font-bold text-white",
                     "{headlines[1]}"
                 }
                 div {
-                    class: "text-[18px] font-light text-white max-w-[625px]",
+                    class: "text-[18px] font-light text-white max-w-[625px] 2xl:text-[24px] 2xl:max-w-[900px]",
                     "{description}"
                 }
             }

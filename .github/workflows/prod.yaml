@@ -1,9 +1,9 @@
-name: Dev deploy
+name: Prod deploy
 
 on:
   push:
     branches:
-      - dev
+      - main
 
 env:
   CARGO_TERM_COLOR: always
@@ -49,29 +49,14 @@ jobs:
           REGION: ap-northeast-2
           ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          ENV: dev
+          ENV: prod
           ACM_ID: ${{ secrets.AWS_HOMEPAGE_ACM_ID }}
           VPC_ID: ${{ secrets.AWS_VPC_ID }}
           SECURITY_GROUP_ID: ${{ secrets.AWS_SECURITY_GROUP_ID }}
           SUBNET1_ID: ${{ secrets.AWS_SUBNET1_ID }}
           SUBNET2_ID: ${{ secrets.AWS_SUBNET2_ID }}
           HOSTED_ZONE_ID: ${{ secrets.AWS_ROUTE53_BIYARD_CO }}
-          CDN_ID: ${{ secrets.AWS_HOMEPAGE_CDN_ID }}
+          CDN_ID: ${{ secrets.AWS_HOMEPAGE_PROD_CDN_ID }}
         run: |
           npm install -g aws-cdk tailwindcss
           make deploy
-
-  create-release-pr:
-    runs-on: ubuntu-latest
-    needs: [build-deployment]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-          ssh-key: ${{ secrets.PULL_KEY_REPO }}
-      - name: Git pr release action
-        uses: grassedge/git-pr-release-action@v1.0
-        with:
-          base: main
-          head: dev
-          token: ${{ secrets.GITHUB_TOKEN }}

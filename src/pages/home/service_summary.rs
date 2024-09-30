@@ -9,7 +9,7 @@ pub(super) fn ServiceSummary() -> Element {
 
     rsx! {
         div {
-            class: "grid grid-cols-3 gap-[10px] p-[20px] h-[206px]",
+            class: "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[10px] p-[20px]",
             for service in services.iter() {
                 ImageCard {
                     category: "{service.category}",

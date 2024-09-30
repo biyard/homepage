@@ -20,7 +20,7 @@ pub fn DownloadPopup() -> Element {
                 evt.stop_propagation();
             },
             div {
-                style: format!("background-image: url('{}')",asset!("./assets/images/popup.png")),
+                style: format!("background-image: url('{}')",asset!(image("assets/images/popup.png"))),
                 class: "row-span-2 bg-[#21344C] flex justify-center items-center bg-center bg-no-repeat",
             }
             div {

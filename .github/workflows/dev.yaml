@@ -58,6 +58,10 @@ jobs:
           HOSTED_ZONE_ID: ${{ secrets.AWS_ROUTE53_BIYARD_CO }}
           CDN_ID: ${{ secrets.AWS_HOMEPAGE_CDN_ID }}
         run: |
+          cargo version
+          rustc --version
+          rustup check
+          dx --version
           npm install -g aws-cdk tailwindcss
           make deploy
 

@@ -356,7 +356,7 @@ pub fn get_home() -> GetHomeResponse {
                 description: "Our founder and CEO, Summer is an educator in the Korean Web3 industry, specializing in industry convergence and DAO technology and applications in the context of blockchain and Web3.0. In the UK, she is also a Venture Partner at Simsan Ventures. Simsan Ventures is a London-based venture capital firm focused on early stage and deep tech companies. In addition, she is the CIO of the Korea office of Simsan Ventures.".to_string(),
                 email: Some("summer@biyard.co".to_string()),
                 github: None,
-                linkedin: None,
+                linkedin: Some("https://www.linkedin.com/in/summerhyejinpark/".to_string()),
                 web: None,
             },
             Member {

@@ -17,7 +17,7 @@ pub fn ImageCard(category: String, title: String, description: String, image: St
                     "{title}"
                 }
                 div {
-                    class: "hidden 2xl:visibility text-[16px] fond-regular",
+                    class: "max-[1200px]:hidden text-[16px] fond-regular",
                     "{description}"
                 }
             }

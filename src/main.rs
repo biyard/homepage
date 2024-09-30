@@ -100,19 +100,19 @@ fn App() -> Element {
     }
 }
 
-// #[cfg(not(feature = "lambda"))]
-// #[allow(dead_code)]
-// fn load_tailwindcss() -> Element {
-//     rsx! {
-//         head::Script {
-//             src: "https://cdn.tailwindcss.com/3.4.5",
-//             ""
-//         }
-//     }
-// }
+#[cfg(not(feature = "lambda"))]
+#[allow(dead_code)]
+fn load_tailwindcss() -> Element {
+    rsx! {
+        head::Script {
+            src: "https://cdn.tailwindcss.com/3.4.5",
+            ""
+        }
+    }
+}
 
-// #[cfg(feature = "lambda")]
-// #[allow(dead_code)]
+#[cfg(feature = "lambda")]
+#[allow(dead_code)]
 fn load_tailwindcss() -> Element {
     rsx! {}
 }

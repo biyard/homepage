@@ -12,7 +12,7 @@ pub fn DownloadPopup() -> Element {
 
     rsx! {
         div {
-            class: "grid grid-rows-5 w-[370px] h-[500px] drop-shadow-[0px_0px_20px_rgba(0,0,0,0.4)] rounded-[20px] overflow-hidden",
+            class: "grid grid-rows-5 w-[370px] h-[500px] drop-shadow-[0px_0px_20px_rgba(0,0,0,0.4)] rounded-[20px] overflow-hidden z-[1000]",
             div {
                 style: format!("background-image: url('{}')",asset!("./assets/images/popup.png")),
                 class: "row-span-2 bg-[#21344C] flex justify-center items-center bg-center bg-no-repeat",

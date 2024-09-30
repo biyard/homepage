@@ -8,10 +8,8 @@ pub fn DownloadPopup() -> Element {
         div {
             class: "grid grid-rows-5 w-[370px] h-[500px] drop-shadow-[0px_0px_20px_rgba(0,0,0,0.4)] rounded-[20px] overflow-hidden",
             div {
-                class: "row-span-2 bg-[#21344C] flex justify-center items-center",
-                img {
-                    src: asset!("./assets/images/popup.png")
-                }
+                style: format!("background-image: url('{}')",asset!("./assets/images/popup.png")),
+                class: "row-span-2 bg-[#21344C] flex justify-center items-center bg-center bg-no-repeat",
             }
             div {
                 class: "row-span-3 bg-white px-[20px] py-[30px] flex flex-col justify-center items-center gap-[30px]",

@@ -15,7 +15,7 @@ pub(super) fn Following() -> Element {
                     class: "flex flex-col justify-start items-start gap-[10px] col-span-3 md:col-span-2",
                     div {
                         class: "text-[18px] md:text-[32px] font-bold",
-                        "For technical collaborations, investment proposals, or service inquiries, please contact us at the email below."
+                        "For technical collaborations, investment proposals, or service updates, please enter your email below."
                     }
                     input {
                         class: "w-full h-[52px] bg-transparent rounded-[10px] px-[24px] py-[14px] text-[16px] leading-[24px] font-regular border-[1px] border-white focus:outline-none focus:border-[#03AB79] transition-all duration-300 ease-in-out",

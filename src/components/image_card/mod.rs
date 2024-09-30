@@ -5,9 +5,9 @@ use dioxus::prelude::*;
 pub fn ImageCard(category: String, title: String, description: String, image: String) -> Element {
     rsx! {
         div {
-            class: "w-full grid grid-cols-5 h-[165px] bg-[#08203E] rounded-[8px] items-center overflow-hidden",
+            class: "w-full grid grid-cols-5 bg-[#08203E] rounded-[8px] items-center overflow-hidden",
             div {
-                class: "col-span-3 flex flex-col justify-center p-[20px]",
+                class: "col-span-3 flex flex-col justify-center px-[20px]",
                 div {
                     class: "text-[16px] fond-regular",
                     "{category}"
@@ -17,15 +17,14 @@ pub fn ImageCard(category: String, title: String, description: String, image: St
                     "{title}"
                 }
                 div {
-                    class: "text-[16px] fond-regular",
+                    class: "hidden 2xl:visibility text-[16px] fond-regular",
                     "{description}"
                 }
             }
             div {
-                class: "col-span-2 flex justify-center items-center",
+                class: "col-span-2 flex justify-end items-right bg-fit bg-no-repeat bg-right h-full w-full",
                 img {
-                    src: image,
-                    class: "w-full object-cover"
+                    src: "{image}",
                 }
             }
         }

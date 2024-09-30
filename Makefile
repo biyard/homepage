@@ -17,6 +17,7 @@ endif
 LOG_LEVEL ?= debug
 REDIRECT_URI ?= http://localhost:8080
 AWS_DYNAMODB_TABLE ?= $(SERVICE)-$(ENV)
+CDN_ID ?= $(shell aws cloudfront list-distributions --query "DistributionList.Items[*].{id:Id,test:AliasICPRecordals[?CNAME=='$(DOMAIN)']}" --output json |jq '. | map(select(.test | length > 0))[0] | .id' | tr -d \")
 
 BUILD_ENV ?= LOG_LEVEL=$(LOG_LEVEL) REDIRECT_URI=$(REDIRECT_URI) AWS_DYNAMODB_TABLE=$(AWS_DYNAMODB_TABLE) VERSION=$(VERSION) COMMIT=$(COMMIT) ENV=$(ENV) SERVICE=$(SERVICE) TABLE_NAME=$(AWS_DYNAMODB_TABLE) DOMAIN=$(DOMAIN)
 
@@ -27,6 +28,12 @@ setup:
 
 run: assets/tailwind.css
 	$(BUILD_ENV) dx serve -i false
+
+build: clean assets/tailwind.css
+	$(BUILD_ENV) dx build --release
+
+run-server: build
+	dist/$(SERVICE)
 
 build-lambda: clean assets/tailwind.css
 	$(BUILD_ENV) dx build --release --platform fullstack --server-feature lambda

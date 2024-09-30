@@ -7,6 +7,7 @@ ifeq ("$(ENV)","prod")
 	LOG_LEVEL ?= error
 	DOMAIN ?= biyard.co
 	REDIRECT_URI ?= https://$(DOMAIN)
+	AWS_DYNAMODB_TABLE ?= $(SERVICE)-prod
 endif
 
 ifeq ("$(ENV)","dev")

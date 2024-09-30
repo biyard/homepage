@@ -12,12 +12,12 @@ use crate::{
 
 #[derive(Debug, Clone, Copy, Default)]
 pub(super) struct Controller {
-    pub slogan: Signal<Option<Slogan>>,
+    pub slogan: Signal<Slogan>,
     pub loaded: Signal<bool>,
-    pub services: Signal<Option<Vec<Service>>>,
-    pub highlight_service: Signal<Option<HighlightService>>,
-    pub feeds: Signal<Option<Vec<Feed>>>,
-    pub members: Signal<Option<Vec<Member>>>,
+    pub services: Signal<Vec<Service>>,
+    pub highlight_service: Signal<HighlightService>,
+    pub feeds: Signal<Vec<Feed>>,
+    pub members: Signal<Vec<Member>>,
 }
 
 impl Controller {
@@ -25,30 +25,14 @@ impl Controller {
         let mut ctrl = Self::default();
         use_context_provider(|| ctrl);
 
-        // let res = use_server_future(get_home_from_server)?;
-        // match res.value()() {
-        //     Some(Ok(result)) => {
         let result = get_home();
-        ctrl.slogan.set(Some(result.slogan));
-        ctrl.services.set(Some(result.services));
-        ctrl.highlight_service.set(Some(result.highlight_service));
-        ctrl.feeds.set(Some(result.feeds));
-        ctrl.members.set(Some(result.members));
-        tracing::debug!("all data fetched");
-        ctrl.loaded.set(true);
-
-        //     }
-        //     Some(Err(err)) => {
-        //         tracing::error!("Failed to get home data: {:?}", err);
-        //     }
-        //     _ => {
-        //         tracing::error!("Failed to get home data:");
-        //     }
-        // };
+        ctrl.slogan.set(result.slogan);
+        ctrl.services.set(result.services);
+        ctrl.highlight_service.set(result.highlight_service);
+        ctrl.feeds.set(result.feeds);
+        ctrl.members.set(result.members);
 
         tracing::debug!("Home data loaded");
-
-        // });
 
         Ok(ctrl)
     }
@@ -62,22 +46,22 @@ impl Controller {
     }
 
     pub fn slogan(&self) -> Slogan {
-        (self.slogan)().unwrap_or_default()
+        (self.slogan)()
     }
 
     pub fn services(&self) -> Vec<Service> {
-        (self.services)().unwrap_or_default()
+        (self.services)()
     }
 
     pub fn highlight_service(&self) -> HighlightService {
-        (self.highlight_service)().unwrap_or_default()
+        (self.highlight_service)()
     }
 
     pub fn feeds(&self) -> Vec<Feed> {
-        (self.feeds)().unwrap_or_default()
+        (self.feeds)()
     }
 
     pub fn members(&self) -> Vec<Member> {
-        (self.members)().unwrap_or_default()
+        (self.members)()
     }
 }

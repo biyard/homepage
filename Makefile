@@ -4,7 +4,7 @@ ENV ?= local
 SERVICE ?= homepage
 
 ifeq ("$(ENV)","prod")
-	LOG_LEVEL ?= error
+	RUST_LOG ?= error
 	DOMAIN ?= biyard.co
 	REDIRECT_URI ?= https://$(DOMAIN)
 	AWS_DYNAMODB_TABLE ?= $(SERVICE)-prod
@@ -15,7 +15,7 @@ ifeq ("$(ENV)","dev")
 	REDIRECT_URI ?= https://$(DOMAIN)
 endif
 
-LOG_LEVEL ?= debug
+RUST_LOG ?= debug
 REDIRECT_URI ?= http://localhost:8080
 AWS_ACCESS_KEY_ID ?= $(shell aws configure get aws_access_key_id $(AWS_FLAG))
 AWS_SECRET_ACCESS_KEY ?= $(shell aws configure get aws_secret_access_key $(AWS_FLAG))
@@ -23,62 +23,37 @@ AWS_REGION ?= $(shell aws configure get region)
 AWS_DYNAMODB_TABLE ?= $(SERVICE)-dev
 CDN_ID ?= $(shell aws cloudfront list-distributions --query "DistributionList.Items[*].{id:Id,test:AliasICPRecordals[?CNAME=='$(DOMAIN)']}" --output json |jq '. | map(select(.test | length > 0))[0] | .id' | tr -d \")
 
-BUILD_ENV ?= LOG_LEVEL=$(LOG_LEVEL) REDIRECT_URI=$(REDIRECT_URI) AWS_DYNAMODB_TABLE=$(AWS_DYNAMODB_TABLE) VERSION=$(VERSION) COMMIT=$(COMMIT) ENV=$(ENV) SERVICE=$(SERVICE) TABLE_NAME=$(AWS_DYNAMODB_TABLE) DOMAIN=$(DOMAIN) AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) AWS_REGION=$(AWS_REGION)
+BUILD_ENV ?= RUST_LOG=$(RUST_LOG) REDIRECT_URI=$(REDIRECT_URI) AWS_DYNAMODB_TABLE=$(AWS_DYNAMODB_TABLE) VERSION=$(VERSION) COMMIT=$(COMMIT) ENV=$(ENV) SERVICE=$(SERVICE) TABLE_NAME=$(AWS_DYNAMODB_TABLE) DOMAIN=$(DOMAIN) AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) AWS_REGION=$(AWS_REGION)
 
-.PHONY: setup run
-setup:
-	cargo install dioxus-cli --version 0.6.0-alpha.2
-	npm install -g aws-cdk tailwindcss
+setup.tool:
+	cargo binstall dioxus-cli
+	cargo binstall toml-cli
+	npm i -g @tailwindcss/cli
+	npm i -g webpack-cli
 
-run: assets/tailwind.css
-	$(BUILD_ENV) dx serve -i false
+run: clean public/tailwind.css
+	$(BUILD_ENV) dx serve --fullstack --platform web $(DXFLAGS)
 
-build: clean assets/tailwind.css
-	$(BUILD_ENV) dx build --release
+build: clean public/tailwind.css
+	$(BUILD_ENV) dx build --release --fullstack --platform web --server-features lambda
+	cp -r $(WORKSPACE_ROOT)/target/dx/$(SERVICE)/release/web $(ARTIFACT_DIR)
 
-run-server: build
-	dist/$(SERVICE)
+	mv $(ARTIFACT_DIR)/server $(ARTIFACT_DIR)/bootstrap
 
-build-lambda: clean assets/tailwind.css
-	$(BUILD_ENV) dx build --release --platform fullstack --server-feature lambda
-	mv dist/$(SERVICE) dist/bootstrap
-
-assets/tailwind.css:
-	tailwindcss -i ./input.css -o ./assets/tailwind.css --minify
-
-.ONESHELL: cdk-build cdk-deploy fixtures/cdk/node_modules
-fixtures/cdk/node_modules:
-	cd fixtures/cdk
+node_modules:
 	npm install
 
-cdk-build: fixtures/cdk/node_modules
-	cd fixtures/cdk
-	$(BUILD_ENV) npm run build
-	$(BUILD_ENV) cdk synth > /dev/null
-
-cdk-deploy:
-	cd fixtures/cdk
-	yes | $(BUILD_ENV) cdk deploy --require-approval never $(AWS_FLAG)
+.PHONY: public/tailwind.css
+public/tailwind.css: node_modules
+	npx tailwindcss -i ./public/input.css -o ./public/tailwind.css
 
 clean:
-	rm -rf dist assets/tailwind.css
+	rm -rf public/tailwind.css public/dep.js
 
-dist/public/members:
-	cp -r assets/members dist/public
+build-docker: clean public/tailwind.css
+	docker run -it --rm --name $(SERVICE) -v $(PWD)/../..:/app -w /app/packages/$(SERVICE) biyard/dioxus-docker bash -c 'source ~/.cargo/env && $(BUILD_ENV) dx build --release --fullstack --server-features lambda && cp -r /app/target/dx/$(SERVICE)/release/web /app/.build/$(SERVICE) && mv /app/.build/$(SERVICE)/server /app/.build/$(SERVICE)/bootstrap'
 
-dist/public/services:
-	cp -r assets/services dist/public
-
-dup-assets:
-	cp -r dist/public/*.css dist/public/*.avif dist/public/*.ico dist/public/assets/
-
-deploy: build-lambda cdk-build cdk-deploy dist/public/members dist/public/services dup-assets s3-sync
-
-s3-sync:
-	aws s3 sync dist/public s3://$(DOMAIN) $(AWS_FLAG) --delete
+s3-deploy:
+	cp -r packages/$(SERVICE)/public/* .build/$(SERVICE)/public
+	aws s3 sync .build/$(SERVICE)/public s3://$(DOMAIN) $(AWS_FLAG)
 	aws cloudfront create-invalidation --distribution-id $(CDN_ID) --paths "/*" $(AWS_FLAG) > /dev/null
-
-run-api: build-lambda cdk-build sam-local-api
-
-sam-local-api:
-	sam local start-api -t ./fixtures/cdk/cdk.out/Stack.template.json

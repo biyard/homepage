@@ -1,44 +1,18 @@
-#![allow(non_snake_case)]
+use bdk::prelude::{
+    by_components::{effects::HoverEffects, responsive::Responsive},
+    *,
+};
 
-pub mod pages {
-    pub mod home;
-}
+pub mod assets;
+pub mod components;
+pub mod pages;
+pub mod route;
 
-pub mod layouts {
-    pub mod root_layout;
-}
+pub use assets::*;
+pub use components::*;
 
-pub mod services {
-    pub mod popup_service;
-}
-
-pub mod components {
-    pub mod download_popup;
-    pub mod feature_button;
-    pub mod filled_button;
-    pub mod icon_button;
-    pub mod icons;
-    pub mod image_card;
-    pub mod outlined_button;
-}
-
-pub mod routes;
-
-pub mod prelude {
-    pub use crate::components::icon_button::*;
-    pub use crate::components::icons;
-    pub use crate::components::outlined_button::*;
-    pub use crate::layouts::root_layout::RootLayout;
-    pub use crate::pages::home::Home;
-}
-
-pub mod apis;
-pub mod models;
-
-use dioxus::prelude::*;
 use dioxus_logger::tracing::{self, Level};
-use routes::Route;
-use services::popup_service::PopupService;
+use route::Route;
 
 fn main() {
     dioxus_logger::init(match option_env!("LOG_LEVEL") {
@@ -52,67 +26,40 @@ fn main() {
     .expect("failed to init logger");
 
     tracing::info!("starting app");
-    dioxus_aws::launch(App);
+    dioxus_aws::launch(app);
 }
 
-fn App() -> Element {
-    PopupService::init();
+fn app() -> Element {
+    let css = include_str!("../public/theme.css");
 
     rsx! {
-        head::Meta {
-            name: "description",
-            content: "Biyard is a leading blockchain technology company focused on building decentralized solutions that drive innovation and transparency. From secure digital content rights protection to enhancing the transparency, trust, and efficiency of public polls and surveys, we empower governments, enterprises, and developers to unlock the full potential of Web3. Our flagship platform, d.AGIT, pioneers new ways to safeguard and manage digital assets with trust and security. At Biyard, we’re shaping the future of a decentralized digital economy."
-        }
-        for href in vec![
-            "https://fonts.googleapis.com",
-            "https://fonts.gstatic.com",
-        ] {
-            head::Link {
-                rel: "preconnect",
-                href,
-            }
-        }
-        for href in vec![
-            "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
-            "https://fonts.googleapis.com/icon?family=Material+Icons",
-            "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0",
-        ] {
-            head::Link {
-                rel: "stylesheet",
-                href,
-            }
-        }
-        head::Link {
-            rel: "icon",
-            r#type: "image/x-icon",
-            href: asset!("assets/favicon.ico"),
-        }
-        head::Link {
-            rel: "stylesheet",
-            href: asset!("assets/main.css")
-        }
-        head::Link {
-            rel: "stylesheet",
-            href: asset!("assets/tailwind.css")
-        }
-        load_tailwindcss {}
-        Router::<Route> {}
-    }
-}
+        btracing::ToastTracing {}
+        HoverEffects {}
 
-#[cfg(not(feature = "lambda"))]
-#[allow(dead_code)]
-fn load_tailwindcss() -> Element {
-    rsx! {
-        head::Script {
-            src: "https://cdn.tailwindcss.com/3.4.5",
-            ""
+        document::Link { href: asset!("/public/logos/favicon.ico"), rel: "shortcut icon" }
+        document::Link {
+            href: asset!("/public/logos/apple-touch-icon.png"),
+            rel: "apple-touch-icon",
+            sizes: "180x180",
         }
-    }
-}
 
-#[cfg(feature = "lambda")]
-#[allow(dead_code)]
-fn load_tailwindcss() -> Element {
-    rsx! {}
+        document::Link { href: "https://fonts.googleapis.com", rel: "preconnect" }
+        document::Link {
+            crossorigin: "false",
+            href: "https://fonts.gstatic.com",
+            rel: "preconnect",
+        }
+        document::Style { href: "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Outfit:wght@100..900&display=swap" }
+        document::Style { href: asset!("/public/main.css") }
+        document::Style { href: asset!("/public/tailwind.css") }
+
+        document::Script { src: "https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" }
+        document::Script {
+            src: "https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs",
+            r#type: "module",
+        }
+        document::Style { r#type: "text/tailwindcss", {css} }
+
+        Responsive { tablet: 900.0, Router::<Route> {} }
+    }
 }

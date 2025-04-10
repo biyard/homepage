@@ -1,35 +1,13 @@
 [application]
-
-# App (Project) Name
 name = "biyard"
-
-# Dioxus App Default Platform
-# web, desktop, fullstack
-default_platform = "fullstack"
-
-# `build` & `serve` dist path
-out_dir = "dist"
-
-# resource (assets) file folder
-# asset_dir = "assets"
+default_platform = "web"
 
 [web.app]
-
-# HTML title tag content
 title = "Biyard"
 
-# base_path = "assets"
-
 [web.watcher]
-
-# when watcher trigger, regenerate the `index.html`
 reload_html = true
-
-# which files or dirs will be watcher monitoring
 watch_path = ["src"]
 
 [web.resource.dev]
-
-# Javascript code file
-# serve: [dev-server] only
 script = []

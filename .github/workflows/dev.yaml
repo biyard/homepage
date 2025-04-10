@@ -39,10 +39,12 @@ jobs:
             target
             .dioxus
 
-      - if: ${{ steps.cache-builder.outputs.cache-hit != 'true' }}
-        name: Install dioxus-cli
+      - uses: cargo-bins/cargo-binstall@main
+
+      - name: Install dioxus-cli
         run: |
-          cargo install dioxus-cli --version 0.6.0-alpha.2
+          cargo binstall dioxus-cli --force
+          cargo binstall toml-cli --force
 
       - name: Deploy APIs
         env:
@@ -59,7 +61,7 @@ jobs:
           CDN_ID: ${{ secrets.AWS_HOMEPAGE_CDN_ID }}
         run: |
           npm install -g aws-cdk tailwindcss
-          make deploy
+          make deploy-web
 
   create-release-pr:
     runs-on: ubuntu-latest

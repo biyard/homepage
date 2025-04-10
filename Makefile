@@ -2,6 +2,7 @@ VERSION ?= v0.1.0
 COMMIT ?= $(shell git rev-parse --short HEAD)
 ENV ?= local
 SERVICE ?= homepage
+ARTIFACT_DIR ?= .build/$(SERVICE)
 
 ifeq ("$(ENV)","prod")
 	RUST_LOG ?= error
@@ -36,7 +37,8 @@ run: clean public/tailwind.css
 
 build: clean public/tailwind.css
 	$(BUILD_ENV) dx build --release --fullstack --platform web --server-features lambda
-	cp -r $(WORKSPACE_ROOT)/target/dx/$(SERVICE)/release/web $(ARTIFACT_DIR)
+	mkdir -p .build
+	cp -r target/dx/$(SERVICE)/release/web $(ARTIFACT_DIR)
 
 	mv $(ARTIFACT_DIR)/server $(ARTIFACT_DIR)/bootstrap
 
@@ -53,7 +55,15 @@ clean:
 build-docker: clean public/tailwind.css
 	docker run -it --rm --name $(SERVICE) -v $(PWD)/../..:/app -w /app/packages/$(SERVICE) biyard/dioxus-docker bash -c 'source ~/.cargo/env && $(BUILD_ENV) dx build --release --fullstack --server-features lambda && cp -r /app/target/dx/$(SERVICE)/release/web /app/.build/$(SERVICE) && mv /app/.build/$(SERVICE)/server /app/.build/$(SERVICE)/bootstrap'
 
+deploy-web: build cdk-deploy s3-deploy
+
+cdk-deploy: deps/rust-sdk/cdk/node_modules
+	cd deps/rust-sdk/cdk && $(BUILD_CDK_ENV) CODE_PATH=$(PWD)/.build/$(SERVICE) npm run build
+	cd deps/rust-sdk/cdk && $(BUILD_CDK_ENV) CODE_PATH=$(PWD)/.build/$(SERVICE) cdk synth
+	cd deps/rust-sdk/cdk && $(BUILD_CDK_ENV) CODE_PATH=$(PWD)/.build/$(SERVICE) cdk deploy --require-approval never $(AWS_FLAG) --all
+
 s3-deploy:
-	cp -r packages/$(SERVICE)/public/* .build/$(SERVICE)/public
+	cp -r public .build/$(SERVICE)/public/public
+	cp  public/favicon.ico .build/$(SERVICE)/public/favicon.ico
 	aws s3 sync .build/$(SERVICE)/public s3://$(DOMAIN) $(AWS_FLAG)
 	aws cloudfront create-invalidation --distribution-id $(CDN_ID) --paths "/*" $(AWS_FLAG) > /dev/null

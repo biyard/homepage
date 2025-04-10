@@ -1,7 +1,4 @@
-use bdk::prelude::{
-    by_components::{effects::HoverEffects, responsive::Responsive},
-    *,
-};
+use bdk::prelude::{by_components::effects::HoverEffects, *};
 
 pub mod assets;
 pub mod components;
@@ -60,6 +57,6 @@ fn app() -> Element {
         }
         document::Style { r#type: "text/tailwindcss", {css} }
 
-        Responsive { tablet: 900.0, Router::<Route> {} }
+        Router::<Route> {}
     }
 }

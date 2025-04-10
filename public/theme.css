@@ -81,5 +81,8 @@
 @layer base {
   section {
     @apply min-h-screen;
+    @apply flex;
+    @apply flex-col;
+    @apply items-center;
   }
 }

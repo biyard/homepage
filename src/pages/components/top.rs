@@ -11,20 +11,21 @@ pub fn Top(
         section { id: "top", ..attributes,
             div { class: "w-849 h-849 absolute -top-[356.74px] -left-[90px] bg-[rgba(33,0,151,0.8)] opacity-50 border border-black blur-[250px] box-border" }
             div { class: "w-full max-w-1440",
-                div { class: "" }
-                h1 { class: "font-black text-[64px]/89 tracking-[-0.69px] uppercase",
-                    {tr.deep}
-                    {" "}
-                    span { class: "text-primary", {tr.tech} }
-                }
+                div { class: "w-full max-w-648 flex flex-col",
+                    h1 { class: "font-black text-[64px]/89 tracking-[-0.69px] uppercase",
+                        {tr.deep}
+                        {" "}
+                        span { class: "text-primary", {tr.tech} }
+                    }
 
-                h1 { class: "font-black text-[64px]/89 tracking-[-0.69px] uppercase",
-                    {tr.deep}
-                    {" "}
-                    span { class: "text-primary", {tr.impact} }
-                }
+                    h1 { class: "font-black text-[64px]/89 tracking-[-0.69px] uppercase",
+                        {tr.deep}
+                        {" "}
+                        span { class: "text-primary", {tr.impact} }
+                    }
 
-                p { class: "font-extralight text-[15px]/23 tracking-[0px]", {tr.description} }
+                    p { class: "font-extralight text-[15px]/23 tracking-[0px]", {tr.description} }
+                }
             }
 
         }

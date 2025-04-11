@@ -16,7 +16,7 @@ pub fn IndexLayout(lang: Language) -> Element {
         }
 
         div { class: "w-full flex flex-col justify-start items-center overflow-hidden",
-            header { class: "fixed top-0 left-1/2 -translate-x-1/2  flex flex-row justify-between items-center w-full max-w-1440 mx-20 my-24 backdrop-blue-[50px] rounded-2xl py-20 px-30 gap-10 bg-menu-shade z-20",
+            header { class: "fixed top-0 left-1/2 -translate-x-1/2  flex flex-row justify-between items-center w-full max-w-1440 my-24 backdrop-blue-[50px] rounded-2xl py-20 px-30 gap-10 bg-menu-shade z-20 max-desktop:mx-20 max-desktop:max-w-full",
                 a { href: "#top", BiyardHorizontalSymbolSignature {} }
                 nav { class: "flex flex-row justify-center items-center gap-48 font-outfit font-semibold text-base/16 tracking-[0.5px] text-center",
                     MenuItem { href: "#intro", {tr.intro} }

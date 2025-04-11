@@ -3,7 +3,7 @@
   --spacing: 1px;
   --color-shade: black;
   --color-black: #000203;
-  --color-primary: #00E6A5;
+  --color-primary: #00D190;
   --color-secondary: #777677;
 
   --color-text-prmary: white;
@@ -72,7 +72,7 @@
   --color-mission-title: #DEE1E6;
   --color-menu-shade: #2C283780;
 
-  --breakpoint-desktop:1440;
+  --breakpoint-desktop:1440px;
   --breakpoint-tablet:1024px;
   --breakpoint-mobile:500px;
   --breakpoint-sm-mobile:380px;
@@ -84,5 +84,10 @@
     @apply flex;
     @apply flex-col;
     @apply items-center;
+  }
+
+  button {
+    @apply cursor-pointer;
+    @apply w-fit;
   }
 }

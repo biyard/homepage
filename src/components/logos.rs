@@ -157,3 +157,44 @@ pub fn BiyardSignatureOnly(
         }
     }
 }
+
+#[component]
+pub fn BiyardSymbolOnly(
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    width: Option<i32>,
+    height: Option<i32>,
+) -> Element {
+    const DEFAULT_WIDTH: i32 = 147;
+    const DEFAULT_HEGITH: i32 = 97;
+    let (width, height) = match (width, height) {
+        (Some(w), Some(h)) => (w, h),
+        (Some(w), None) => {
+            let ratio = w as f32 / DEFAULT_WIDTH as f32;
+            let h = (DEFAULT_HEGITH as f32 * ratio) as i32;
+
+            (w, h)
+        }
+        (None, Some(h)) => {
+            let ratio = h as f32 / DEFAULT_HEGITH as f32;
+            let w = (DEFAULT_WIDTH as f32 * ratio) as i32;
+
+            (w, h)
+        }
+        _ => (DEFAULT_WIDTH, DEFAULT_HEGITH),
+    };
+
+    rsx! {
+        svg {
+            fill: "none",
+            height: "{height}",
+            view_box: "0 0 147 97",
+            width: "{width}",
+            xmlns: "http://www.w3.org/2000/svg",
+            ..attributes,
+            path {
+                d: "M114.021 0.267578H96.4204L81.8659 21.9495L90.6663 35.0728L105.211 13.4005L128.498 48.3218L105.211 83.243L49.7202 0.325603H32.1193L0.0703125 48.3895L32.1193 96.4533H49.7202L64.265 74.7811L55.4646 61.6578L40.9294 83.3107L17.6421 48.3895L40.9294 13.4682L96.4204 96.3953H114.021L146.07 48.3314C135.384 32.3069 124.708 16.2921 114.021 0.267578Z",
+                fill: "#00D190",
+            }
+        }
+    }
+}

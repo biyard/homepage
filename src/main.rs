@@ -55,6 +55,8 @@ fn app() -> Element {
             src: "https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs",
             r#type: "module",
         }
+
+        document::Script { src: INTRO_ANIM }
         document::Style { r#type: "text/tailwindcss", {css} }
 
         Router::<Route> {}

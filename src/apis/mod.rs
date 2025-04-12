@@ -1,5 +1,6 @@
 pub mod error;
 pub mod members;
+pub mod news;
 
 use bdk::prelude::*;
 use server_fn::codec::{GetUrl, Json};

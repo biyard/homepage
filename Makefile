@@ -33,7 +33,7 @@ setup.tool:
 	npm i -g webpack-cli
 
 run: clean public/tailwind.css
-	$(BUILD_ENV) dx serve --fullstack --platform web $(DXFLAGS)
+	$(BUILD_ENV) dx serve --fullstack --platform web --hot-reload true $(DXFLAGS)
 
 build: clean public/tailwind.css
 	$(BUILD_ENV) dx build --release --fullstack --platform web --server-features lambda

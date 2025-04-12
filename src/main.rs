@@ -1,12 +1,18 @@
 use bdk::prelude::{by_components::effects::HoverEffects, *};
 
+pub mod apis;
 pub mod assets;
 pub mod components;
 pub mod pages;
 pub mod route;
+pub mod tables;
 
+pub use apis::*;
 pub use assets::*;
 pub use components::*;
+pub use tables::*;
+
+pub type Result<T> = std::result::Result<T, apis::error::Error>;
 
 use dioxus_logger::tracing::{self, Level};
 use route::Route;

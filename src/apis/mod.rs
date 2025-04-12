@@ -1,7 +1,7 @@
-pub mod home;
-pub mod users;
+pub mod error;
+pub mod members;
 
-use dioxus::fullstack::prelude::*;
+use bdk::prelude::*;
 use server_fn::codec::{GetUrl, Json};
 
 #[server(endpoint = "/version", input=GetUrl, output=Json)]

@@ -71,11 +71,19 @@
   --color-tab-hover: #282828;
   --color-mission-title: #DEE1E6;
   --color-menu-shade: #2C283780;
+  --color-purple-blur: #210097;
+  --color-service-card-bg: #2C2C2C;
+
+  --color-gray-300: #D4D4D8;
+  --color-gray-800: #27272A;
 
   --breakpoint-desktop:1440px;
   --breakpoint-tablet:1024px;
   --breakpoint-mobile:500px;
   --breakpoint-sm-mobile:380px;
+
+  --container-desktop: 1440px;
+  --container-wrapper: 1280px;
 }
 
 @layer base {

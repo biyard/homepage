@@ -2471,6 +2471,9 @@ dependencies = [
  "rand",
  "serde",
  "slog",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
 ]
 
 [[package]]

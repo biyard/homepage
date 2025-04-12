@@ -13,7 +13,7 @@ pub fn Top(
         section { id: "top", ..attributes,
             div { class: "w-849 h-849 absolute -top-[356.74px] -left-[90px] bg-[rgba(33,0,151,0.8)] opacity-50 border border-black blur-[250px] box-border z-1" }
             img { class: "absolute top-64 right-0 z-0", src: TOP_BG }
-            div { class: "w-full max-w-1440 flex flex-col z-2 my-290",
+            div { class: "w-full max-w-1440 min-h-screen flex flex-col z-2 py-100 justify-center",
                 div { class: "w-full flex flex-col gap-96",
                     div { class: "w-full max-w-648 flex flex-col gap-32",
                         h1 { class: "font-black text-[64px]/89 tracking-[-0.69px] uppercase",

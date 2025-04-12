@@ -14,7 +14,7 @@ pub fn Intro(
 
     rsx! {
         section { id: "intro",
-            div { class: "w-full max-w-1440 flex flex-col gap-96",
+            div { class: "w-full max-w-1440 min-h-screen flex flex-col gap-96  py-100 justify-center",
                 div { class: "border w-full border-gray-800 backdrop-blur-sm rounded-[16px] py-40 px-118 flex flex-row justify-between items-start gap-120 max-desktop:flex-col max-desktop:gap-40 max-desktop:px-20",
                     LabeledTextWithLogo {
                         icon: rsx! {

@@ -6,6 +6,33 @@ use bdk::prelude::{by_components::meta::MetaSeoTemplate, *};
 pub fn IndexLayout(lang: Language) -> Element {
     let tr: LayoutTranslate = translate(&lang);
 
+    #[cfg(feature = "web")]
+    use_effect(|| {
+        use wasm_bindgen::JsCast;
+        use web_sys::{Element, window};
+
+        if let Some(window) = window() {
+            let location = window.location();
+            if let Ok(hash) = location.hash() {
+                tracing::debug!("hash :{hash}");
+
+                if !hash.is_empty() {
+                    let document = window.document().unwrap();
+                    // web_sys::console::log_1(&hash);
+                    if let Some(target) = document.query_selector(&hash).ok().flatten() {
+                        let scroll = web_sys::ScrollIntoViewOptions::new();
+                        scroll.set_behavior(web_sys::ScrollBehavior::Smooth);
+
+                        let _ = target
+                            .dyn_ref::<Element>()
+                            .unwrap()
+                            .scroll_into_view_with_scroll_into_view_options(&scroll);
+                    }
+                }
+            }
+        }
+    });
+
     rsx! {
         MetaSeoTemplate {
             lang,

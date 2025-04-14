@@ -38,8 +38,6 @@ pub enum Need {
     PartnershipCollaboration = 3,
     #[translate(en = "Investment & Funding", ko = "투자 및 자금")]
     InvestmentFunding = 4,
-    #[translate(en = "Regulatory & Legal Concerns", ko = "규제 및 법률 문제")]
-    RegulatoryLegalConcerns = 5,
     #[translate(en = "Feedback & Suggestions", ko = "피드백 및 제안")]
-    FeedbackSuggestions = 6,
+    FeedbackSuggestions = 5,
 }

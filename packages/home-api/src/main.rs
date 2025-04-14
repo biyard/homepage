@@ -30,7 +30,7 @@ macro_rules! migrate {
 async fn migration(pool: &sqlx::Pool<sqlx::Postgres>) -> Result<()> {
     tracing::info!("Running migration");
 
-    migrate!(pool, Member, News,);
+    migrate!(pool, Member, News, Contact);
 
     tracing::info!("Migration done");
     Ok(())
@@ -56,6 +56,10 @@ async fn app() -> Result<Router> {
     }
 
     let app = app
+        .nest(
+            "/v1/contacts",
+            v1::contacts::ContactController::new(pool.clone()).route()?,
+        )
         .nest(
             "/v1/members",
             v1::members::MemberController::new(pool.clone()).route()?,

@@ -4,12 +4,14 @@ use by_types::config::*;
 #[derive(Debug)]
 pub struct Config {
     pub database: DatabaseConfig,
+    pub migrate: bool,
 }
 
 impl Default for Config {
     fn default() -> Self {
         Config {
             database: DatabaseConfig::default(),
+            migrate: option_env!("MIGRATE").unwrap_or("false") == "true",
         }
     }
 }

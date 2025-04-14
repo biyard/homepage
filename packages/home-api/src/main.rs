@@ -50,7 +50,10 @@ async fn app() -> Result<Router> {
         panic!("Database is not initialized. Call init() first.");
     };
 
-    migration(&pool).await?;
+    if conf.migrate {
+        tracing::info!("Running migration");
+        migration(&pool).await?;
+    }
 
     let app = app
         .nest(

@@ -213,6 +213,7 @@ jobs:
           BASE_DOMAIN: biyard.co
           ENABLE_S3: false
           ENABLE_LAMBDA: true
+          MIGRATE: false
         run: |
           npm i -g aws-cdk
           make deploy

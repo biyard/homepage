@@ -82,7 +82,7 @@ mod tests {
         let last_name = "Doe".to_string();
         let first_name = "John".to_string();
         let email = format!("submit-contact-{}@example.com", now);
-        let company_namy = "Example Company".to_string();
+        let company_name = "Example Company".to_string();
         let needs = Need::GeneralInquiry;
         let help = "I need help with something.".to_string();
 
@@ -91,7 +91,7 @@ mod tests {
                 last_name.clone(),
                 first_name.clone(),
                 email.clone(),
-                company_namy.clone(),
+                company_name.clone(),
                 needs,
                 help.clone(),
             )
@@ -109,7 +109,7 @@ mod tests {
         assert_eq!(doc.last_name, last_name);
         assert_eq!(doc.first_name, first_name);
         assert_eq!(doc.email, email);
-        assert_eq!(doc.company_name, company_namy);
+        assert_eq!(doc.company_name, company_name);
         assert_eq!(doc.needs, needs);
         assert_eq!(doc.help, help);
     }

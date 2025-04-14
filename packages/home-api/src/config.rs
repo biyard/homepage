@@ -11,7 +11,7 @@ impl Default for Config {
     fn default() -> Self {
         Config {
             database: DatabaseConfig::default(),
-            migrate: option_env!("MIGRATE").unwrap_or("false") == "true",
+            migrate: option_env!("MIGRATE").unwrap_or("true") == "true",
         }
     }
 }

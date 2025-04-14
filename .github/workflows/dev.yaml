@@ -113,7 +113,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           JWT_SECRET_KEY: ${{ secrets.DEV_JWT_SECRET }}
         run: |
-          cd packages/api  && cargo test --tests
+          cd packages/home-api  && cargo test --tests
 
   www:
     runs-on: ubuntu-22.04

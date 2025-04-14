@@ -13,4 +13,4 @@ tailwind.css
 /fixtures/cdk/.env
 /fixtures/cdk/cdk.context.json
 node_modules/
-/.build/
+.build/

@@ -26,13 +26,13 @@ impl ContactController {
             last_name,
             first_name,
             email,
-            company_namy,
+            company_name,
             needs,
             help,
         }: ContactSubmitRequest,
     ) -> Result<Contact> {
         self.repo
-            .insert(last_name, first_name, email, company_namy, needs, help)
+            .insert(last_name, first_name, email, company_name, needs, help)
             .await
     }
 }
@@ -109,7 +109,7 @@ mod tests {
         assert_eq!(doc.last_name, last_name);
         assert_eq!(doc.first_name, first_name);
         assert_eq!(doc.email, email);
-        assert_eq!(doc.company_namy, company_namy);
+        assert_eq!(doc.company_name, company_namy);
         assert_eq!(doc.needs, needs);
         assert_eq!(doc.help, help);
     }

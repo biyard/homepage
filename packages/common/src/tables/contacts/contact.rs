@@ -19,7 +19,7 @@ pub struct Contact {
     #[validate(email)]
     pub email: String,
     #[api_model(action = submit)]
-    pub company_namy: String,
+    pub company_name: String,
     #[api_model(action = submit, type = INTEGER)]
     pub needs: Need,
     #[api_model(action = submit)]

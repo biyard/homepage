@@ -1,61 +1,63 @@
-VERSION ?= v0.1.0
+ENV ?= dev
+BASE_DOMAIN ?=
+DOMAIN ?= $(ENV).$(BASE_DOMAIN)
+
+HOSTED_ZONE_ID ?= $(shell aws route53 list-hosted-zones-by-name --dns-name $(BASE_DOMAIN) --query "HostedZones[0].Id" --output text | cut -d'/' -f3)
+PROJECT ?= $(shell basename `git rev-parse --show-toplevel`)
+SERVICE ?= www
 COMMIT ?= $(shell git rev-parse --short HEAD)
-ENV ?= local
-SERVICE ?= homepage
-ARTIFACT_DIR ?= .build/$(SERVICE)
 
-ifeq ("$(ENV)","prod")
-	RUST_LOG ?= error
-	DOMAIN ?= biyard.co
-	REDIRECT_URI ?= https://$(DOMAIN)
-	AWS_DYNAMODB_TABLE ?= $(SERVICE)-prod
-endif
-
-ifeq ("$(ENV)","dev")
-	DOMAIN ?= dev.biyard.co
-	REDIRECT_URI ?= https://$(DOMAIN)
-endif
-
-RUST_LOG ?= debug
-REDIRECT_URI ?= http://localhost:8080
-AWS_ACCESS_KEY_ID ?= $(shell aws configure get aws_access_key_id $(AWS_FLAG))
-AWS_SECRET_ACCESS_KEY ?= $(shell aws configure get aws_secret_access_key $(AWS_FLAG))
-AWS_REGION ?= $(shell aws configure get region)
-AWS_DYNAMODB_TABLE ?= $(SERVICE)-dev
+ACCESS_KEY_ID ?= $(shell aws configure get aws_access_key_id $(AWS_FLAG))
+SECRET_ACCESS_KEY ?= $(shell aws configure get aws_secret_access_key $(AWS_FLAG))
+REGION ?= $(shell aws configure get region)
 CDN_ID ?= $(shell aws cloudfront list-distributions --query "DistributionList.Items[*].{id:Id,test:AliasICPRecordals[?CNAME=='$(DOMAIN)']}" --output json |jq '. | map(select(.test | length > 0))[0] | .id' | tr -d \")
+WORKSPACE_ROOT ?= $(PWD)
+AWS_ACCOUNT_ID ?= $(shell aws sts get-caller-identity --query "Account" --output text)
+VPC_ID ?= $(shell aws ec2 describe-vpcs --query "Vpcs[0].VpcId" --output json | tr -d \")
+API_PREFIX ?=
 
-BUILD_ENV ?= RUST_LOG=$(RUST_LOG) REDIRECT_URI=$(REDIRECT_URI) AWS_DYNAMODB_TABLE=$(AWS_DYNAMODB_TABLE) VERSION=$(VERSION) COMMIT=$(COMMIT) ENV=$(ENV) SERVICE=$(SERVICE) TABLE_NAME=$(AWS_DYNAMODB_TABLE) DOMAIN=$(DOMAIN) AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) AWS_REGION=$(AWS_REGION)
+STACK ?= $(PROJECT)-$(SERVICE)-$(ENV)-stack
 
-setup.tool:
-	cargo binstall dioxus-cli
-	cargo binstall toml-cli
-	npm i -g @tailwindcss/cli
-	npm i -g webpack-cli
+ifeq ($(ENABLE_DOCKER),true)
+	DOCKER_COMMAND_SUFFUIX = -docker
+endif
 
-run: clean public/tailwind.css
-	$(BUILD_ENV) dx serve --fullstack --platform web --hot-reload true $(DXFLAGS)
+BUILD_CDK_ENV ?= AWS_ACCESS_KEY_ID=$(ACCESS_KEY_ID) AWS_SECRET_ACCESS_KEY=$(SECRET_ACCESS_KEY) AWS_REGION=$(REGION) DOMAIN=$(DOMAIN) TABLE_NAME=$(TABLE_NAME) WORKSPACE_ROOT=$(WORKSPACE_ROOT) SERVICE=$(SERVICE) VPC_ID=$(VPC_ID) AWS_ACCOUNT_ID=$(AWS_ACCOUNT_ID) COMMIT=$(COMMIT) ENV=$(ENV) ENABLE_S3=$(ENABLE_S3) ENABLE_DYNAMO=$(ENABLE_DYNAMO) ENABLE_FARGATE=$(ENABLE_FARGATE) ENABLE_LAMBDA=$(ENABLE_LAMBDA) ENABLE_OPENSEARCH=$(ENABLE_OPENSEARCH) BASE_DOMAIN=$(BASE_DOMAIN) PROJECT=$(PROJECT) STACK=$(STACK) HOSTED_ZONE_ID=$(HOSTED_ZONE_ID)
 
-build: clean public/tailwind.css
-	$(BUILD_ENV) dx build --release --fullstack --platform web --server-features lambda
-	mkdir -p .build
-	cp -r target/dx/$(SERVICE)/release/web $(ARTIFACT_DIR)
+run:
+	cd packages/$(SERVICE) && make run
 
-	mv $(ARTIFACT_DIR)/server $(ARTIFACT_DIR)/bootstrap
-
-node_modules:
-	npm install
-
-.PHONY: public/tailwind.css
-public/tailwind.css: node_modules
-	npx tailwindcss -i ./public/input.css -o ./public/tailwind.css
+serve:
+	cd packages/$(SERVICE) && make serve
 
 clean:
-	rm -rf public/tailwind.css public/dep.js
+	rm -rf .build/$(SERVICE)
 
-build-docker: clean public/tailwind.css
-	docker run -it --rm --name $(SERVICE) -v $(PWD)/../..:/app -w /app/packages/$(SERVICE) biyard/dioxus-docker bash -c 'source ~/.cargo/env && $(BUILD_ENV) dx build --release --fullstack --server-features lambda && cp -r /app/target/dx/$(SERVICE)/release/web /app/.build/$(SERVICE) && mv /app/.build/$(SERVICE)/server /app/.build/$(SERVICE)/bootstrap'
+.PHONY: deploy-if-needed
+deploy-if-needed:
+	$(eval DEPLOYED_VERSION := $(shell curl https://$(DOMAIN)$(API_PREFIX)/version | tr -d \" | cut -d'-' -f1))
+	$(eval CURRENT_VERSION := $(shell toml get packages/$(SERVICE)/Cargo.toml package.version | tr -d \"))
+	$(eval CMD := $(shell if [ "$(DEPLOYED_VERSION)" != "$(CURRENT_VERSION)" ] ; then echo "OLD_VERSION=\"$(DEPLOYED_VERSION)\" NEW_VERSION=\"$(CURRENT_VERSION)\" make deploy"; else echo "echo \"deployed version: $(DEPLOYED_VERSION), current version: $(CURRENT_VERSION), already latest version\""; fi))
+	$(CMD)
 
+.PHONY: deploy-web-if-needed
+deploy-web-if-needed:
+	$(eval DEPLOYED_VERSION := $(shell curl https://$(DOMAIN)$(API_PREFIX)/version | tr -d \" | cut -d'-' -f1))
+	$(eval CURRENT_VERSION := $(shell toml get packages/$(SERVICE)/Cargo.toml package.version | tr -d \"))
+	$(eval CMD := $(shell if [ "$(DEPLOYED_VERSION)" != "$(CURRENT_VERSION)" ] ; then echo "OLD_VERSION=\"$(DEPLOYED_VERSION)\" NEW_VERSION=\"$(CURRENT_VERSION)\" make deploy-web"; else echo "echo \"deployed version: $(DEPLOYED_VERSION), current version: $(CURRENT_VERSION), already latest version\""; fi))
+	$(CMD)
+
+.PHONY: deploy deploy-web
+deploy: build cdk-deploy
 deploy-web: build cdk-deploy s3-deploy
+
+.PHONY: build
+build: clean
+	mkdir -p .build
+	cd packages/$(SERVICE) && ENV=$(ENV) ARTIFACT_DIR=$(PWD)/.build/$(SERVICE) make build$(DOCKER_COMMAND_SUFFUIX)
+
+deps/rust-sdk/cdk/node_modules:
+	cd deps/rust-sdk/cdk && npm install
 
 cdk-deploy: deps/rust-sdk/cdk/node_modules
 	cd deps/rust-sdk/cdk && $(BUILD_CDK_ENV) CODE_PATH=$(PWD)/.build/$(SERVICE) npm run build
@@ -63,7 +65,12 @@ cdk-deploy: deps/rust-sdk/cdk/node_modules
 	cd deps/rust-sdk/cdk && $(BUILD_CDK_ENV) CODE_PATH=$(PWD)/.build/$(SERVICE) cdk deploy --require-approval never $(AWS_FLAG) --all
 
 s3-deploy:
-	cp -r public .build/$(SERVICE)/public/public
-	cp  public/favicon.ico .build/$(SERVICE)/public/favicon.ico
+	cp -r packages/$(SERVICE)/public .build/$(SERVICE)/public/public
 	aws s3 sync .build/$(SERVICE)/public s3://$(DOMAIN) $(AWS_FLAG)
 	aws cloudfront create-invalidation --distribution-id $(CDN_ID) --paths "/*" $(AWS_FLAG) > /dev/null
+
+node_modules:
+	npm i
+
+test: node_modules
+	npx playwright test

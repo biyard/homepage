@@ -29,7 +29,7 @@ run: clean public/tailwind.css
 
 build: clean public/tailwind.css
 	$(BUILD_ENV) dx build --release --fullstack --server-features lambda --platform web
-	cp -r $(CARGO_TARGET_DIR)/target/dx/$(SERVICE)/release/web $(ARTIFACT_DIR)
+	cp -r $(CARGO_TARGET_DIR)/dx/$(SERVICE)/release/web $(ARTIFACT_DIR)
 
 	mv $(ARTIFACT_DIR)/server $(ARTIFACT_DIR)/bootstrap
 

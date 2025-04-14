@@ -58,9 +58,9 @@ jobs:
           DATABASE_TYPE: postgres
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
         run: |
-          echo "" > packages/main-ui/public/tailwind.css
-          echo "" > packages/main-ui/public/dep.js
-          cd packages/main-ui && cargo test --tests --features web
+          echo "" > packages/www/public/tailwind.css
+          echo "" > packages/www/public/dep.js
+          cd packages/www && cargo test --tests --features web
 
   test-with-server:
     runs-on: ubuntu-latest
@@ -113,7 +113,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           JWT_SECRET_KEY: ${{ secrets.DEV_JWT_SECRET }}
         run: |
-          cd packages/main-api  && cargo test --tests
+          cd packages/api  && cargo test --tests
 
   www:
     runs-on: ubuntu-22.04
@@ -148,7 +148,7 @@ jobs:
           REGION: ap-northeast-2
           ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          SERVICE: main-ui
+          SERVICE: www
         run: |
           dx check -p $SERVICE
 

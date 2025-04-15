@@ -13,14 +13,19 @@ pub fn IndexPage(lang: Language) -> Element {
             image: crate::MEET_BIYARD.to_string(),
         }
 
-        div { id: "index-page", class: "flex flex-col w-full justify-start",
+        div {
+            id: "index-page",
+            class: "flex flex-col w-full justify-start items-center",
             Top { lang }
             Intro { lang }
             WhatWeDo { lang }
             Team { lang }
             PressAndNews { lang }
             Contact { lang }
-            Footer { lang }
+            div { class: "w-full items-center flex flex-col gap-393",
+                Updates { lang }
+                Footer { lang }
+            }
         } // end of this page
     }
 }

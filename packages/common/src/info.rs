@@ -7,4 +7,9 @@ pub enum Info {
         en = "Contact submission completed. Please check your email for further instructions."
     )]
     ContactSubmit,
+    #[translate(
+        ko = "업데이트를 받아보실수 있습니다.",
+        en = "You can receive updates."
+    )]
+    KeepUpdateSubmit,
 }

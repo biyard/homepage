@@ -4,6 +4,7 @@ mod intro;
 mod press;
 mod team;
 mod top;
+mod updates;
 mod what;
 
 pub use contact::*;
@@ -12,4 +13,5 @@ pub use intro::*;
 pub use press::*;
 pub use team::*;
 pub use top::*;
+pub use updates::*;
 pub use what::*;

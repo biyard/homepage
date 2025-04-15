@@ -20,6 +20,8 @@ pub struct News {
     #[api_model(summary)]
     #[validate(length(max = 350))]
     pub contents: String,
+    #[api_model(summary, version = v0.1)]
+    pub link: String,
     #[api_model(summary)]
     pub main: bool,
 }

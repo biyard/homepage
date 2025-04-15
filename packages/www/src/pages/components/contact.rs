@@ -2,8 +2,9 @@ mod controller;
 mod i18n;
 
 use bdk::prelude::*;
+use common::Need;
 
-use crate::{Input, SecondaryButton};
+use crate::{Dropdown, Input, SecondaryButton};
 
 #[component]
 pub fn Contact(
@@ -58,16 +59,31 @@ pub fn Contact(
                         oninput: move |company_name| ctrl.company_name.set(company_name),
                     }
 
-                    TextInput {
-                        label: tr.needs,
-                        name: "needs",
-                        oninput: move |need| ctrl.set_need(need),
+                    div { class: "w-full flex flex-col items-start gap-8",
+                        label { class: "text-[15px]/22 tracking-[0.5px] font-medium text-neutral-400",
+                            {tr.needs}
+                        }
+
+                        Dropdown {
+                            items: Need::variants(&lang),
+                            selected: ctrl.selected_need(),
+                            onselect: move |need| ctrl.set_need(need),
+                        }
                     }
 
-                    TextInput {
-                        label: tr.help,
-                        name: "help",
-                        oninput: move |msg| ctrl.help.set(msg),
+                    div { class: "w-full flex flex-col items-start gap-8",
+                        label { class: "text-[15px]/22 tracking-[0.5px] font-medium text-neutral-400",
+                            {tr.help}
+                        }
+
+                        textarea {
+                            class: "w-full rounded-[4px] border-1 border-gray-600 px-16 py-11 flex flex-row items-center focus:outline-none focus:border-primary",
+                            placeholder: tr.help_placeholder,
+                            name: "help",
+                            rows: 4,
+                            oninput: move |evt| ctrl.help.set(evt.value()),
+                        }
+
                     }
 
                     SecondaryButton {

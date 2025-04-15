@@ -33,6 +33,11 @@ translate! {
         en: "How can we help?",
     },
 
+    help_placeholder: {
+        en: "Please share what you want us to help",
+        ko: "어떤 도움을 드릴까요?",
+    }
+
     btn_submit: {
         ko: "제출하기",
         en: "Submit",

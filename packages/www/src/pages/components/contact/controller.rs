@@ -12,6 +12,7 @@ pub struct Controller {
     pub company_name: Signal<String>,
     pub needs: Signal<Need>,
     pub help: Signal<String>,
+    pub selected_need: Signal<usize>,
 }
 
 impl Controller {
@@ -24,14 +25,14 @@ impl Controller {
             company_name: use_signal(|| String::new()),
             needs: use_signal(|| Need::GeneralInquiry),
             help: use_signal(|| String::new()),
+            selected_need: use_signal(|| 0),
         };
 
         Ok(ctrl)
     }
 
-    pub fn set_need(&mut self, need: String) {
-        self.needs
-            .set(need.parse::<Need>().unwrap_or(Need::GeneralInquiry));
+    pub fn set_need(&mut self, need: usize) {
+        self.needs.set(Need::VARIANTS[need]);
     }
 
     pub async fn submit(&mut self) {

@@ -3,7 +3,7 @@ mod i18n;
 
 use bdk::prelude::*;
 
-use crate::SecondaryButton;
+use crate::{Input, SecondaryButton};
 
 #[component]
 pub fn Contact(
@@ -95,13 +95,10 @@ pub fn TextInput(
             label { class: "text-[15px]/22 tracking-[0.5px] font-medium text-neutral-400",
                 {label}
             }
-            input {
-                class: "w-full h-44 rounded-[4px] border-b-1 border-gray-600 px-20 flex flex-row items-center focus:border-b-1 active:border-primary",
+            Input {
                 placeholder,
                 name,
-                oninput: move |event| {
-                    oninput(event.value());
-                },
+                oninput: move |value| oninput(value),
             }
         }
     }

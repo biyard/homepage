@@ -1,9 +1,10 @@
 use super::*;
-use crate::{BiyardHorizontalSymbolSignature, route::Route};
+use crate::{BiyardHorizontalSymbolSignature, Hamburger, MenuBack, route::Route};
 use bdk::prelude::{by_components::meta::MetaSeoTemplate, *};
 
 #[component]
 pub fn IndexLayout(lang: Language) -> Element {
+    let mut ctrl = LayoutController::new(lang)?;
     let tr: LayoutTranslate = translate(&lang);
 
     #[cfg(feature = "web")]
@@ -43,20 +44,48 @@ pub fn IndexLayout(lang: Language) -> Element {
         }
 
         div { class: "w-full flex flex-col justify-start items-center overflow-hidden",
-            header { class: "fixed top-0 left-1/2 -translate-x-1/2  flex flex-row justify-between items-center w-full max-w-1440 my-24 backdrop-blue-[50px] rounded-2xl py-20 px-30 gap-10 bg-menu-shade z-20 max-desktop:max-w-[calc(100vw-40px)]",
-                a { href: "#top", BiyardHorizontalSymbolSignature {} }
-                nav { class: "flex flex-row justify-center items-center gap-48 font-outfit font-semibold text-base/16 tracking-[0.5px] text-center",
-                    MenuItem { href: "#intro", {tr.intro} }
+            header {
+                class: "fixed group top-0 left-1/2 -translate-x-1/2  flex flex-row justify-between items-center w-full max-w-1440 my-24 backdrop-blue-[50px] rounded-2xl py-20 px-30 gap-10 bg-menu-shade z-20 max-desktop:max-w-[calc(100vw-40px)] max-tablet:flex-col max-tablet:bg-transparent max-tablet:aria-expanded:bg-black max-tablet:m-0 max-tablet:max-w-full max-tablet:aria-expanded:h-screen",
+                "aria-expanded": ctrl.expanded_menu(),
+                div { class: "max-tablet:w-full flex flex-row justify-between items-center",
+                    a { href: "#top", BiyardHorizontalSymbolSignature {} }
+                    div {
+                        class: "hidden overflow-hidden max-tablet:block cursor-pointer",
+                        onclick: move |_| ctrl.toggle_menu(),
+                        Hamburger { class: "block group-aria-[icon=open]:block" }
+                        MenuBack { class: "hidden group-aria-[icon=opened]:block" }
+                    }
+                }
+                nav { class: "flex flex-row justify-center items-center gap-48 font-outfit font-semibold text-base/16 tracking-[0.5px] text-center max-tablet:h-full max-tablet:flex-col max-tablet:z-100 max-tablet:bg-black max-tablet:hidden max-tablet:group-aria-expanded:flex",
+                    MenuItem {
+                        href: "#intro",
+                        onclick: move |_| ctrl.expanded_menu.set(false),
+                        {tr.intro}
+                    }
 
-                    MenuItem { href: "#what-we-do", {tr.what} }
+                    MenuItem {
+                        href: "#what-we-do",
+                        onclick: move |_| ctrl.expanded_menu.set(false),
+                        {tr.what}
+                    }
 
-                    MenuItem { href: "#our-team", {tr.team} }
+                    MenuItem {
+                        href: "#our-team",
+                        onclick: move |_| ctrl.expanded_menu.set(false),
+                        {tr.team}
+                    }
 
-                    MenuItem { href: "#press-and-news", {tr.press} }
+                    MenuItem {
+                        href: "#press-and-news",
+                        onclick: move |_| ctrl.expanded_menu.set(false),
+                        {tr.press}
+                    }
+
 
                     a {
-                        class: "text-bg py-10 px-20 rounded-[50px] bg-primary",
+                        class: "text-bg py-10 px-20 rounded-[50px] bg-primary hover:bg-primary/80",
                         href: "#contact",
+                        onclick: move |_| ctrl.expanded_menu.set(false),
                         {tr.contact}
                     }
                 }
@@ -68,18 +97,21 @@ pub fn IndexLayout(lang: Language) -> Element {
 }
 
 #[component]
-pub fn MenuItem(href: String, children: Element) -> Element {
+pub fn MenuItem(href: String, onclick: EventHandler<()>, children: Element) -> Element {
     let mut hover = use_signal(|| false);
 
     rsx! {
         a {
-            class: "flex flex-col min-w-110 gap-7 mt-7 items-center",
+            class: "flex flex-col min-w-110 gap-7 mt-7 items-center max-tablet:hover:text-primary",
             href,
             onmouseenter: move |_| hover.set(true),
             onmouseleave: move |_| hover.set(false),
+            onclick: move |_| {
+                onclick.call(());
+            },
             {children}
             div {
-                class: "transition-all duration-500 w-0 h-1 aria-hover:bg-primary aria-hover:w-full",
+                class: "transition-all duration-500 w-0 h-1 aria-hover:bg-primary aria-hover:w-full max-tablet:aria-hover:bg-transparent",
                 "aria-hover": hover(),
             }
         }

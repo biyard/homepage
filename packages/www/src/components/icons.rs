@@ -154,3 +154,66 @@ pub fn LinkedIn(
         }
     }
 }
+
+#[component]
+pub fn Hamburger(
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    #[props(default = 32)] size: i64,
+) -> Element {
+    rsx! {
+        svg {
+            fill: "none",
+            height: "{size}",
+            view_box: "0 0 32 32",
+            width: "{size}",
+            xmlns: "http://www.w3.org/2000/svg",
+            ..attributes,
+            path {
+                d: "M8 8H24M8 16H16H24M8 24H24",
+                stroke: "white",
+                stroke_linecap: "round",
+                stroke_linejoin: "round",
+                stroke_width: "2",
+            }
+        }
+    }
+}
+
+#[component]
+pub fn MenuBack(
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    #[props(default = 32)] size: i64,
+) -> Element {
+    rsx! {
+        svg {
+            fill: "none",
+            height: "{size}",
+            view_box: "0 0 32 32",
+            width: "{size}",
+            xmlns: "http://www.w3.org/2000/svg",
+            ..attributes,
+            g { clip_path: "url(#clip0_76_25508)",
+                rect {
+                    height: "31",
+                    rx: "3.5",
+                    stroke: "#464646",
+                    width: "31.25",
+                    x: "0.25",
+                    y: "0.5",
+                }
+                path {
+                    d: "M9.75 16H22M22 16L16 10M22 16L16 22",
+                    stroke: "white",
+                    stroke_linecap: "round",
+                    stroke_linejoin: "round",
+                    stroke_width: "2",
+                }
+            }
+            defs {
+                clipPath { id: "clip0_76_25508",
+                    rect { fill: "white", height: "32", width: "32" }
+                }
+            }
+        }
+    }
+}

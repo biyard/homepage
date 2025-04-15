@@ -3,7 +3,6 @@ use bdk::prelude::*;
 
 #[component]
 pub fn IndexPage(lang: Language) -> Element {
-    let mut _ctrl = Controller::new(lang)?;
     let tr: IndexTranslate = translate(&lang);
 
     rsx! {

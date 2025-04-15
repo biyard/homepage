@@ -7,7 +7,7 @@ title = "Biyard"
 
 [web.watcher]
 reload_html = true
-watch_path = ["src"]
+watch_path = ["src", "../common"]
 
 [web.resource.dev]
 script = []

@@ -7,6 +7,11 @@ use bdk::prelude::*;
 pub enum Error {
     #[translate(ko = "잘못된 요청입니다.", en = "Bad Request")]
     Unknown(String),
+    #[translate(
+        ko = "이미 구독중입니다.",
+        en = "You may have already submitted a request."
+    )]
+    AlreadySubscribed,
 }
 
 impl Error {

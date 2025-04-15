@@ -4,7 +4,7 @@ use common::MemberSummary;
 #[component]
 pub fn MemberCard(member: MemberSummary, class: Option<String>) -> Element {
     rsx! {
-        div { class: "group w-full h-full overflow-hidden",
+        div { class: "group w-full h-full overflow-hidden min-w-300",
             div {
                 style: format!("background-image: url('{}')", member.image.clone()),
                 class: "rounded-[8px] h-400 transition-all duration-1000 [backface-visibility:hidden] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] flex flex-col gap-[10px] items-center justify-center bg-cover",

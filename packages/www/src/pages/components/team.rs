@@ -31,7 +31,9 @@ pub fn Team(lang: Language) -> Element {
                     span { class: "text-primary", "Team" }
                 }
 
-                div { class: "w-full grid grid-cols-4 gap-24",
+                div {
+                    class: "w-full grid grid-cols-4 gap-24 max-tablet:flex max-tablet:flex-row max-tablet:overflow-x-scroll",
+                    style: "scrollbar-width: none; -ms-overflow-style: none; &::-webkit-scrollbar {{ display: none; }}",
                     for member in members().unwrap_or_default() {
                         member_card::MemberCard { member }
                     }

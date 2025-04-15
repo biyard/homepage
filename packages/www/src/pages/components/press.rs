@@ -29,7 +29,7 @@ pub fn PressAndNews(lang: Language) -> Element {
                 if let Some(news) = news() {
                     div {
                         id: "news-container",
-                        class: "w-full grid grid-cols-2 gap-22",
+                        class: "w-full grid grid-cols-2 gap-22 max-tablet:grid-cols-1",
 
                         div {
                             id: "main-news",
@@ -56,7 +56,7 @@ pub fn PressAndNews(lang: Language) -> Element {
 
                         div {
                             id: "sub-news",
-                            class: "h-full w-full grid grid-rows-3 gap-24",
+                            class: "h-full w-full grid grid-rows-3 gap-24 max-tablet:hidden",
                             for i in 1..news.len() {
                                 div { class: "w-full flex flex-row gap-24 items-center",
                                     img {

@@ -10,22 +10,26 @@ pub fn Updates(lang: Language) -> Element {
     let tr: UpdatesTranslate = translate(&lang);
 
     rsx! {
-        div {
-            id: "get-updates",
-            class: "w-full max-w-wrapper py-40 px-118 bg-black/50 border border-gray-800 backdrop-blur-[5px] rounded-2xl flex flex-col gap-24",
-            h2 { class: "text-[28px]/36 font-semibold whitespace-pre-line", {tr.title} }
-            form { class: "w-full flex flex-row gap-24",
-                input {
-                    class: "w-full border-b border-b-gray-600 rounded-sm px-20 flex flex-col justify-center focus:outline-none focus:border-b-primary",
-                    name: "email",
-                    placeholder: tr.placeholder,
-                    oninput: move |evt| ctrl.email.set(evt.value()),
+        div { class: "w-full px-28",
+            div {
+                id: "get-updates",
+                class: "w-full max-w-wrapper py-40 px-118 bg-black/50 border border-gray-800 backdrop-blur-[5px] rounded-2xl flex flex-col gap-24 max-tablet:px-16 max-tablet:py-24",
+                h2 { class: "text-[28px]/36 font-semibold whitespace-pre-line max-tablet:text-xl/34 max-tablet:whitespace-normal",
+                    {tr.title}
                 }
-                SecondaryRoundedButton {
-                    onclick: move |_| async move {
-                        ctrl.submit().await;
-                    },
-                    {tr.btn_submit}
+                form { class: "w-full flex flex-row gap-24 max-tablet:flex-col max-tablet:gap-48 max-tablet:items-center",
+                    input {
+                        class: "w-full h-44 border-b border-b-gray-600 rounded-sm px-20 flex flex-col justify-center focus:outline-none focus:border-b-primary placeholder:text-gray-600",
+                        name: "email",
+                        placeholder: tr.placeholder,
+                        oninput: move |evt| ctrl.email.set(evt.value()),
+                    }
+                    SecondaryRoundedButton {
+                        onclick: move |_| async move {
+                            ctrl.submit().await;
+                        },
+                        {tr.btn_submit}
+                    }
                 }
             }
         }
@@ -36,8 +40,8 @@ translate! {
     UpdatesTranslate;
 
     title: {
-        ko: "Stay in the loop with our latest tech\nbreakthroughs and service updates!",
-        en: "Stay in the loop with our latest tech\nbreakthroughs and service updates!",
+        ko: "Stay in the loop with our latest tech \nbreakthroughs and service updates!",
+        en: "Stay in the loop with our latest tech \nbreakthroughs and service updates!",
     },
 
     placeholder: {

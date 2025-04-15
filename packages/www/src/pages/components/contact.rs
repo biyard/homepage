@@ -15,7 +15,9 @@ pub fn Contact(
     let tr: i18n::ContactTranslate = translate(&lang);
 
     rsx! {
-        section { id: "contact", class: "w-full relative",
+        section {
+            id: "contact",
+            class: "w-full relative flex flex-col justify-center",
             div { class: "absolute top-[1/2] left-[2/3] h-1328 w-1328 bg-purple-blur/40 blur-[500px]" }
             div { class: "w-full max-w-wrapper grid grid-cols-2 gap-24 py-120 z-1",
                 h1 { class: "col-span-1 text-[45px]/64 text-center font-medium text-white",

@@ -27,7 +27,6 @@ pub fn Footer(
                     LinkedIn { class: "hover:[&>path]:fill-white/80" }
                 }
             }
-            div { class: "absolute top-[100%] left-[100%] h-614 w-614 bg-purple-blur/80 blur-[500px]" }
         }
     }
 }

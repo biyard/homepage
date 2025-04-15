@@ -3,16 +3,18 @@ use bdk::prelude::*;
 #[component]
 pub fn IntroAnimation(
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    #[props(default = 466)] size: i32,
     children: Element,
 ) -> Element {
     rsx! {
         svg {
             id: "intro-animation",
             fill: "none",
-            height: "465",
+            height: "{size}",
             view_box: "0 0 466 465",
-            width: "466",
+            width: "{size}",
             xmlns: "http://www.w3.org/2000/svg",
+            ..attributes,
             g { id: "motion",
                 g {
                     id: "Maskgroup",

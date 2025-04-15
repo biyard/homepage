@@ -26,7 +26,9 @@ pub fn WhatWeDo(children: Element, lang: Language) -> Element {
                     }
                 }
 
-                div { id: "services", class: "grid grid-cols-3 gap-25",
+                div {
+                    id: "services",
+                    class: "grid grid-cols-3 gap-25 max-tablet:grid-cols-1",
                     ServiceCard {
                         title: tr.dagit_title,
                         description: tr.dagit_description,
@@ -46,15 +48,15 @@ pub fn WhatWeDo(children: Element, lang: Language) -> Element {
 
                 div {
                     id: "our-approach",
-                    class: "w-full flex flex-row gap-58 justify-start",
+                    class: "w-full flex flex-row gap-58 justify-start max-tablet:flex-col max-tablet:gap-32",
 
-                    h1 { class: "text-[45px]/64 text-left font-medium text-white",
+                    h1 { class: "text-[45px]/64 text-left font-medium text-white max-tablet:text-[32px]/42 max-tablet:w-full max-tablet:text-center",
                         {tr.our}
                         {" "}
                         span { class: "text-primary", {tr.approach} }
                     }
 
-                    div { class: "w-full grid grid-cols-3 gap-64 items-start justify-start",
+                    div { class: "w-full grid grid-cols-3 gap-64 items-start justify-start max-tablet:grid-cols-1 max-tablet:gap-32",
                         Approach {
                             title: tr.practical,
                             description: tr.practical_description,

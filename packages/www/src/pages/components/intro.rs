@@ -14,8 +14,8 @@ pub fn Intro(
 
     rsx! {
         section { id: "intro",
-            div { class: "w-full max-w-wrapper min-h-screen flex flex-col gap-96  py-100 justify-center",
-                div { class: "border w-full border-gray-800 backdrop-blur-sm rounded-[16px] py-40 px-118 flex flex-row justify-between items-start gap-120 max-desktop:flex-col max-desktop:gap-40 max-desktop:px-20",
+            div { class: "w-full max-w-wrapper min-h-screen flex flex-col gap-96  py-100 justify-center max-desktop:max-w-full",
+                div { class: "border w-full border-gray-800 backdrop-blur-sm rounded-[16px] py-40 px-118 flex flex-row justify-between items-start gap-120 max-desktop:flex-col max-desktop:gap-40 max-desktop:px-20 max-tablet:flex-col max-tablet:py-24 max-tablet:px-16",
                     LabeledTextWithLogo {
                         icon: rsx! {
                             BiyardSymbolOnly { width: 20 }
@@ -34,14 +34,20 @@ pub fn Intro(
                 } // vision and mission
 
                 div { class: "w-full flex flex-row items-center justify-between gap-187",
-                    IntroAnimation {}
-                    div { class: "flex flex-col gap-48 items-start",
-                        h2 { class: "font-medium text-[45px]/64",
-                            "Core "
-                            span { class: "text-primary", "Values" }
+                    IntroAnimation { class: "max-tablet:hidden" }
+                    div { class: "flex flex-col gap-48 items-start max-tablet:w-full",
+                        div { class: "w-full flex flex-col gap-12",
+                            h2 { class: "font-medium text-[45px]/64 max-tablet:w-full max-tablet:text-center",
+                                "Core "
+                                span { class: "text-primary", "Values" }
+                            }
+                            IntroAnimation {
+                                class: "hidden w-full m-auto max-tablet:block",
+                                size: 334,
+                            }
                         }
 
-                        div { class: "w-full grid grid-cols-2 gap-x-51 gap-y-80",
+                        div { class: "w-full grid grid-cols-2 gap-x-51 gap-y-80 max-tablet:grid-cols-1 max-tablet:gap-y-32",
                             LabeledTextWithLogo {
                                 icon: rsx! {
                                     Glasses {}

@@ -21,7 +21,7 @@ pub fn IndexPage(lang: Language) -> Element {
             Team { lang }
             PressAndNews { lang }
             Contact { lang }
-            div { class: "w-full items-center flex flex-col gap-393",
+            div { class: "w-full items-center flex flex-col gap-393 max-tablet:gap-276",
                 Updates { lang }
                 Footer { lang }
             }

@@ -10,7 +10,7 @@ pub fn Updates(lang: Language) -> Element {
     let tr: UpdatesTranslate = translate(&lang);
 
     rsx! {
-        div { class: "w-full px-28",
+        div { class: "w-full px-28 flex flex-col items-center",
             div {
                 id: "get-updates",
                 class: "w-full max-w-wrapper py-40 px-118 bg-black/50 border border-gray-800 backdrop-blur-[5px] rounded-2xl flex flex-col gap-24 max-tablet:px-16 max-tablet:py-24",

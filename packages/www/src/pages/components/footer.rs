@@ -11,7 +11,7 @@ pub fn Footer(
     let tr: FooterTranslate = translate(&lang);
 
     rsx! {
-        footer { class: "w-full max-w-wrapper flex flex-row justify-between items-center mx-auto py-24 max-tablet:flex-col max-tablet:gap-24",
+        footer { class: "w-full max-w-wrapper flex flex-row justify-between items-center mx-auto py-24 max-tablet:flex-col max-tablet:gap-24 relative",
             p { class: "text-[15px]/23 font-extralight order-1 max-tablet:order-2",
                 {tr.copyright}
             }
@@ -27,6 +27,7 @@ pub fn Footer(
                     LinkedIn { class: "hover:[&>path]:fill-white/80" }
                 }
             }
+            div { class: "absolute top-[100%] left-[100%] h-614 w-614 bg-purple-blur/80 blur-[500px]" }
         }
     }
 }

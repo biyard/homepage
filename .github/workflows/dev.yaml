@@ -112,6 +112,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           JWT_SECRET_KEY: ${{ secrets.DEV_JWT_SECRET }}
+          RUST_TEST_THREADS: "1"
         run: |
           cd packages/home-api  && cargo test --tests
 

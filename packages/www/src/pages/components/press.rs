@@ -5,7 +5,7 @@ use crate::config;
 
 #[component]
 pub fn PressAndNews(lang: Language) -> Element {
-    let news = use_resource(|| async {
+    let news = use_server_future(|| async {
         match News::get_client(config::get().api_endpoint)
             .query(NewsQuery::new(4))
             .await
@@ -16,7 +16,7 @@ pub fn PressAndNews(lang: Language) -> Element {
                 vec![]
             }
         }
-    });
+    })?;
 
     rsx! {
         section { id: "press-and-news", class: "w-full py-120",

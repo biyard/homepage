@@ -166,6 +166,7 @@ jobs:
           ENABLE_S3: true
           ENABLE_LAMBDA: true
           VERSIONS: v1
+          STACK: homepage-dev-stack
           V1_ENDPOINT: home-api.dev.biyard.co
           DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
         run: |

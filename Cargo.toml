@@ -14,6 +14,8 @@ license = "MIT"
 bdk = { path = "deps/rust-sdk/packages/bdk" }
 common = { path = "packages/common" }
 
+[profile]
+
 [profile.wasm-dev]
 inherits = "dev"
 opt-level = 1

@@ -52,7 +52,7 @@ async fn app() -> Result<Router> {
 
     if conf.migrate {
         tracing::info!("Running migration");
-        migration(&pool).await?;
+        migration(&pool).await;
     }
 
     let app = app

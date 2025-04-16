@@ -17,7 +17,7 @@ pub fn Updates(lang: Language) -> Element {
                 h2 { class: "text-[28px]/36 font-semibold whitespace-pre-line max-tablet:text-xl/34 max-tablet:whitespace-normal",
                     {tr.title}
                 }
-                form { class: "w-full flex flex-row gap-24 max-tablet:flex-col max-tablet:gap-48 max-tablet:items-center",
+                div { class: "w-full flex flex-row gap-24 max-tablet:flex-col max-tablet:gap-48 max-tablet:items-center",
                     input {
                         class: "w-full h-44 border-b border-b-gray-600 rounded-sm px-20 flex flex-col justify-center focus:outline-none focus:border-b-primary placeholder:text-gray-600",
                         name: "email",

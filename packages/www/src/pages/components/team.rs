@@ -1,26 +1,10 @@
 use bdk::prelude::*;
-use common::{Member, MemberQuery};
-
-use crate::config;
+use common::*;
 
 mod member_card;
 
 #[component]
-pub fn Team(lang: Language) -> Element {
-    let members = use_server_future(|| async {
-        let conf = config::get();
-        match Member::get_client(conf.api_endpoint)
-            .query(MemberQuery::new(4))
-            .await
-        {
-            Ok(members) => members.items,
-            Err(e) => {
-                tracing::error!("Failed to fetch members: {:?}", e);
-                vec![]
-            }
-        }
-    })?;
-
+pub fn Team(lang: Language, members: Vec<MemberSummary>) -> Element {
     rsx! {
         section { id: "our-team", class: "w-full relative",
             div { class: "absolute top-[1/2] -left-313 h-1261 w-1261 bg-purple-blur/40 blur-[500px]" }
@@ -34,7 +18,7 @@ pub fn Team(lang: Language) -> Element {
                 div {
                     class: "w-full grid grid-cols-4 gap-24 max-tablet:flex max-tablet:flex-row max-tablet:overflow-x-scroll",
                     style: "scrollbar-width: none; -ms-overflow-style: none; &::-webkit-scrollbar {{ display: none; }}",
-                    for member in members().unwrap_or_default() {
+                    for member in members {
                         member_card::MemberCard { member }
                     }
                 }

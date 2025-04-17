@@ -18,7 +18,7 @@ pub fn PressAndNews(lang: Language, news: Vec<NewsSummary>) -> Element {
 
                         a {
                             id: "main-news",
-                            class: "w-full flex flex-col gap-24 cursor-pointer",
+                            class: "w-full flex flex-col gap-24 cursor-pointer opacity-80 hover:opacity-100 max-tablet:opacity-100",
                             target: "_blank",
                             href: news[0].link.clone(),
                             img {
@@ -45,7 +45,7 @@ pub fn PressAndNews(lang: Language, news: Vec<NewsSummary>) -> Element {
                             class: "h-full w-full grid grid-rows-3 gap-24 max-tablet:hidden",
                             for i in 1..news.len() {
                                 a {
-                                    class: "w-full h-full flex flex-row gap-24 items-center cursor-pointer",
+                                    class: "w-full h-full flex flex-row gap-24 items-center cursor-pointer opacity-80 hover:opacity-100 max-tablet:opacity-100",
                                     href: news[i].link.clone(),
                                     target: "_blank",
                                     img {

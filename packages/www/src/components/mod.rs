@@ -1,10 +1,10 @@
-mod buttons;
+pub mod confirm_popup;
 mod dropdown;
 mod icons;
 mod inputs;
 mod logos;
 
-pub use buttons::*;
+pub use confirm_popup::*;
 pub use dropdown::*;
 pub use icons::*;
 pub use inputs::*;

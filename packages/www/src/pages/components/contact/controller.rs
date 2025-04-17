@@ -1,7 +1,7 @@
-use bdk::prelude::*;
+use bdk::prelude::{dioxus_popup::PopupService, *};
 use common::*;
 
-use crate::config;
+use crate::{ConfirmPopup, config};
 
 #[derive(Clone, Copy, DioxusController)]
 pub struct Controller {
@@ -13,6 +13,7 @@ pub struct Controller {
     pub needs: Signal<Need>,
     pub help: Signal<String>,
     pub selected_need: Signal<usize>,
+    pub popup: PopupService,
 }
 
 impl Controller {
@@ -26,6 +27,7 @@ impl Controller {
             needs: use_signal(|| Need::GeneralInquiry),
             help: use_signal(|| String::new()),
             selected_need: use_signal(|| 0),
+            popup: use_context(),
         };
 
         Ok(ctrl)
@@ -49,7 +51,14 @@ impl Controller {
         {
             Ok(res) => {
                 tracing::debug!("Contact submit response: {:?}", res);
-                btracing::i!(self.lang, Info::ContactSubmit);
+                self.popup
+                    .open(rsx! {
+                        ConfirmPopup {
+                            title: "Thank you! \nYour message has been received",
+                            description: "We appreciate your message and will get \nback to you shortly.",
+                            btn_label: "Confirm",
+                        }
+                    });
             }
             Err(err) => {
                 btracing::e!(self.lang, err);

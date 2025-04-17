@@ -33,8 +33,9 @@ build: clean public/tailwind.css
 
 	mv $(ARTIFACT_DIR)/server $(ARTIFACT_DIR)/bootstrap
 
+.PHONY: public/tailwind.css
 public/tailwind.css:
-	tailwindcss -i ./public/input.css -o ./public/tailwind.css
+	npx tailwindcss -i ./public/input.css -o ./public/tailwind.css
 
 clean:
 	rm -rf public/tailwind.css public/dep.js

@@ -1,7 +1,5 @@
 use bdk::prelude::*;
 
-use crate::SecondaryButton;
-
 #[component]
 pub fn Top(
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
@@ -40,7 +38,9 @@ pub fn Top(
                     }
 
                     div { class: "flex flex-col gap-10 w-full items-center",
-                        SecondaryButton { class: "max-tablet:w-full", onclick: |_| {},
+                        button {
+                            class: "btn-secondary max-tablet:w-full",
+                            onclick: |_| {},
                             {tr.btn_see_all_services}
                         }
                         a {

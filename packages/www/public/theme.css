@@ -88,17 +88,45 @@
   --container-wrapper: 1280px;
 }
 
-@layer base {
-  section {
-    @apply min-h-screen;
-    @apply flex;
-    @apply flex-col;
-    @apply items-center;
-    @apply max-desktop:px-20;
-  }
+section {
+  @apply min-h-screen;
+  @apply flex;
+  @apply flex-col;
+  @apply items-center;
+  @apply max-desktop:px-20;
+}
 
-  button {
-    @apply cursor-pointer;
-    @apply w-fit;
-  }
+button {
+  @apply cursor-pointer;
+  @apply w-fit;
+}
+
+.btn-primary {
+  @apply px-15 py-40 rounded-sm bg-primary hover:bg-primary/80 rounded-sm text-bg font-semibold text-base;
+}
+
+.btn-secondary {
+  @apply bg-white text-bg font-semibold text-base py-15 px-40 hover:bg-white/80 whitespace-nowrap rounded-sm;
+}
+
+.descript-extralight-15 {
+  font-family: Outfit;
+  font-weight: 200;
+  font-size: 15px;
+  line-height: 23px;
+  letter-spacing: 0%;
+  text-align: center;
+}
+
+.subhead-bold-20 {
+  font-family: Outfit;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: 0%;
+  text-align: center;
+}
+
+.col {
+  @apply flex flex-col;
 }

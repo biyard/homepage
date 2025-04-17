@@ -1,4 +1,4 @@
-use bdk::prelude::{by_components::effects::HoverEffects, *};
+use bdk::prelude::{by_components::effects::HoverEffects, dioxus_popup::PopupService, *};
 
 pub mod assets;
 pub mod components;
@@ -28,7 +28,9 @@ fn main() {
 }
 
 fn app() -> Element {
+    PopupService::init();
     let css = include_str!("../public/theme.css");
+    let tailwindcss = include_str!("../public/tailwind.css");
 
     rsx! {
         btracing::ToastTracing {}
@@ -49,7 +51,7 @@ fn app() -> Element {
         }
         document::Style { href: "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Outfit:wght@100..900&display=swap" }
         document::Style { href: asset!("/public/main.css") }
-        document::Style { href: asset!("/public/tailwind.css") }
+        document::Style { {tailwindcss} }
 
         document::Script { src: "https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" }
         document::Script {

@@ -4,7 +4,7 @@ mod i18n;
 use bdk::prelude::*;
 use common::Need;
 
-use crate::{Dropdown, Input, SecondaryButton};
+use crate::{Dropdown, Input};
 
 #[component]
 pub fn Contact(
@@ -86,7 +86,8 @@ pub fn Contact(
 
                     }
 
-                    SecondaryButton {
+                    button {
+                        class: "btn-secondary",
                         onclick: move |_| async move {
                             ctrl.submit().await;
                         },

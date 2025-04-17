@@ -2,8 +2,6 @@ mod controller;
 
 use bdk::prelude::*;
 
-use crate::SecondaryRoundedButton;
-
 #[component]
 pub fn Updates(lang: Language) -> Element {
     let mut ctrl = controller::Controller::new(lang)?;
@@ -24,7 +22,8 @@ pub fn Updates(lang: Language) -> Element {
                         placeholder: tr.placeholder,
                         oninput: move |evt| ctrl.email.set(evt.value()),
                     }
-                    SecondaryRoundedButton {
+                    button {
+                        class: "btn-secondary rounded-full",
                         onclick: move |_| async move {
                             ctrl.submit().await;
                         },

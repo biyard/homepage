@@ -35,6 +35,7 @@ pub fn IndexLayout(lang: Language) -> Element {
     });
 
     rsx! {
+        PopupZone {}
         MetaSeoTemplate {
             lang,
             title: "Biyard",

@@ -55,8 +55,8 @@ pub fn IndexLayout(lang: Language) -> Element {
                         div {
                             class: "hidden overflow-hidden max-tablet:block cursor-pointer",
                             onclick: move |_| ctrl.toggle_menu(),
-                            Hamburger { class: "block group-aria-[icon=open]:block" }
-                            MenuBack { class: "hidden group-aria-[icon=opened]:block" }
+                            Hamburger { class: "block group-aria-expanded:hidden hover:[&>path]:stroke-primary" }
+                            MenuBack { class: "hidden group-aria-expanded:block hover:[&>g>path]:stroke-primary hover:[&>g>rect]:stroke-primary hover:[&>g>rect]:fill-black/25" }
                         }
                     }
                     nav { class: "flex flex-row justify-center items-center gap-48 font-outfit font-semibold text-base/16 tracking-[0.5px] text-center max-tablet:h-full max-tablet:flex-col max-tablet:z-100 max-tablet:bg-black max-tablet:hidden max-tablet:group-aria-expanded:flex",

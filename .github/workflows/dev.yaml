@@ -9,15 +9,123 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build-deployment:
+  test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
           ssh-key: ${{ secrets.PULL_KEY_REPO }}
 
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: clippy, rustfmt
+          target: wasm32-unknown-unknown
+          toolchain: stable
+
+      - name: Update packages
+        run: sudo apt-get update
+
+      - name: Install dependencies
+        run: sudo apt-get install -y libgtk-3-dev
+
+      - name: Install PostgreSQL Client
+        run: sudo apt-get install -y postgresql-client
+
+      - name: Initialize Database SQL
+        run: |
+          psql postgresql://postgres:postgres@localhost:5432/test -f ./deps/rust-sdk/fixtures/sql/init.sql
+
+      - name: test
+        env:
+          RUSTFLAGS: "-A warnings"
+          DATABASE_TYPE: postgres
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+        run: |
+          echo "" > packages/www/public/tailwind.css
+          echo "" > packages/www/public/dep.js
+          cd packages/www && cargo test --tests --features web
+
+  test-with-server:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          ssh-key: ${{ secrets.PULL_KEY_REPO }}
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: clippy, rustfmt
+          target: wasm32-unknown-unknown
+          toolchain: stable
+      - name: Install PostgreSQL Client
+        run: sudo apt-get install -y postgresql-client
+
+      - name: Initialize Database SQL
+        run: |
+          psql postgresql://postgres:postgres@localhost:5432/test -f ./deps/rust-sdk/fixtures/sql/init.sql
+
+      - name: test
+        env:
+          RUSTFLAGS: "-A warnings"
+          DATABASE_TYPE: postgres
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+          ENV: "dev"
+          DOMAIN: "dev.ratel.foundation"
+          OPENAPI_KEY: ${{ secrets.OPENAPI_KEY }}
+          AUTH_SECRET_KEY: ${{ secrets.DEV_AUTH_SECRET_KEY }}
+          BASE_DOMAIN: "ratel.foundation"
+          AWS_REGION: ap-northeast-2
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          JWT_SECRET_KEY: ${{ secrets.DEV_JWT_SECRET }}
+          RUST_TEST_THREADS: "1"
+        run: |
+          cd packages/home-api  && cargo test --tests
+
+  www:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          ssh-key: ${{ secrets.PULL_KEY_REPO }}
+
+      - uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -29,20 +137,68 @@ jobs:
           target: wasm32-unknown-unknown
           toolchain: stable
 
-      - name: Cache builder
-        id: cache-builder
-        uses: actions/cache@v3
-        with:
-          key: cache-builder
-          path: |
-            ~/.cargo
-            target
-            .dioxus
+      - uses: cargo-bins/cargo-binstall@main
 
-      - if: ${{ steps.cache-builder.outputs.cache-hit != 'true' }}
-        name: Install dioxus-cli
+      - name: Install dioxus-cli
         run: |
-          cargo install dioxus-cli --version 0.6.0-alpha.2
+          cargo binstall dioxus-cli --force
+          cargo binstall toml-cli --force
+
+      - name: Checking violate
+        env:
+          REGION: ap-northeast-2
+          ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SERVICE: www
+        run: |
+          dx check -p $SERVICE
+
+      - name: Deploy UI
+        env:
+          REGION: ap-northeast-2
+          ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          API_ENDPOINT: https://home-api.dev.biyard.co
+          ENV: dev
+          SERVICE: www
+          DOMAIN: dev.biyard.co
+          API_PREFIX: /api
+          BASE_DOMAIN: biyard.co
+          ENABLE_S3: true
+          ENABLE_LAMBDA: true
+          VERSIONS: v1
+          STACK: homepage-dev-stack
+          V1_ENDPOINT: home-api.dev.biyard.co
+          DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+        run: |
+          npm i -g aws-cdk @tailwindcss/cli
+          make deploy-web
+
+  home-api:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          ssh-key: ${{ secrets.PULL_KEY_REPO }}
+
+      - uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: clippy, rustfmt
+          target: wasm32-unknown-unknown
+          toolchain: stable
+
+      - uses: cargo-bins/cargo-binstall@main
+      - name: Install toml-cli
+        run: |
+          cargo binstall toml-cli --force
 
       - name: Deploy APIs
         env:
@@ -50,20 +206,24 @@ jobs:
           ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           ENV: dev
-          ACM_ID: ${{ secrets.AWS_HOMEPAGE_ACM_ID }}
-          VPC_ID: ${{ secrets.AWS_VPC_ID }}
-          SECURITY_GROUP_ID: ${{ secrets.AWS_SECURITY_GROUP_ID }}
-          SUBNET1_ID: ${{ secrets.AWS_SUBNET1_ID }}
-          SUBNET2_ID: ${{ secrets.AWS_SUBNET2_ID }}
-          HOSTED_ZONE_ID: ${{ secrets.AWS_ROUTE53_BIYARD_CO }}
-          CDN_ID: ${{ secrets.AWS_HOMEPAGE_CDN_ID }}
+          RUST_LOG: debug
+          SERVICE: home-api
+          DOMAIN: home-api.dev.biyard.co
+          AUTH_DOMAIN: dev.biyard.co
+          DATABASE_TYPE: postgres
+          DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+          BASE_DOMAIN: biyard.co
+          ENABLE_S3: false
+          ENABLE_LAMBDA: true
+          MIGRATE: false
         run: |
-          npm install -g aws-cdk tailwindcss
+          npm i -g aws-cdk
           make deploy
 
   create-release-pr:
     runs-on: ubuntu-latest
-    needs: [build-deployment]
+    if: github.ref == 'refs/heads/dev'
+    needs: [www, home-api]
     steps:
       - uses: actions/checkout@v3
         with:

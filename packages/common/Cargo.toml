@@ -1,0 +1,25 @@
+[package]
+name = "common"
+version = "0.1.0"
+authors.workspace = true
+description.workspace = true
+edition.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+bdk.workspace = true
+sqlx = { version = "0.8.3", features = [
+  "sqlite",
+  "postgres",
+  "runtime-tokio",
+  "time",
+  "bigdecimal",
+], optional = true }
+bigdecimal = "0.4.7"
+validator = { version = "0.20.0", features = ["derive"] }
+serde = { version = "1.0.197", features = ["derive"] }
+
+[features]
+web = ["bdk/web"]
+server = ["bdk/be", "sqlx"]

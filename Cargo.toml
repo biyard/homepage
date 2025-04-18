@@ -1,27 +1,27 @@
-[package]
-name = "homepage"
-version = "0.1.0"
-authors = ["hackartists <hackartists@gmail.com>"]
-edition = "2021"
+[workspace]
+members = ["packages/*"]
+resolver = "2"
+exclude = ["deps"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[workspace.package]
+authors = ["Biyard"]
+description = "Ratel"
+edition = "2024"
+repository = "https://github.com/biyard/homepage"
+license = "MIT"
 
-[dependencies]
-serde = { version = "1.0.197", features = ["derive"] }
+[workspace.dependencies]
+bdk = { path = "deps/rust-sdk/packages/bdk" }
+common = { path = "packages/common" }
 
-dioxus = { version = "0.6.0-alpha.2", features = ["fullstack", "router"] }
-dioxus-aws = { version = "0.6.0-alpha.2" }
+[profile]
 
-# Debug
-dioxus-logger = "0.5.1"
-rand = "0.8.5"
-getrandom = { version = "0.2.15", features = ["js"], optional = true }
-easy-dynamodb = { version = "0.1.1", optional = true }
-slog = { version = "2.7.0", optional = true }
-web-sys = { version = "0.3.70", optional = true }
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
 
-[features]
-default = []
-server = ["dioxus-aws/server", "easy-dynamodb", "slog"]
-lambda = ["dioxus-aws/lambda", "server"]
-web = ["dioxus-aws/web", "getrandom", "web-sys"]
+[profile.server-dev]
+inherits = "dev"
+
+[profile.android-dev]
+inherits = "dev"

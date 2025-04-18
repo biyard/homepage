@@ -1,0 +1,13 @@
+[application]
+name = "biyard"
+default_platform = "web"
+
+[web.app]
+title = "Biyard"
+
+[web.watcher]
+reload_html = true
+watch_path = ["src", "../common"]
+
+[web.resource.dev]
+script = []

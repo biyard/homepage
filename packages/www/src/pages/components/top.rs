@@ -8,10 +8,7 @@ pub fn Top(
     let tr: TopTranslate = translate(&lang);
 
     rsx! {
-        section {
-            id: "top",
-            class: "w-full relative overflow-x-hidden",
-            ..attributes,
+        section { id: "top", class: "w-full relative overflow-hidden", ..attributes,
             div { class: "w-849 h-849 absolute -top-356.74 -left-90 bg-purple-blur/80 opacity-50 blur-[500px] z-1" }
             div { class: "w-full max-w-wrapper min-h-screen flex flex-col z-2 py-100 justify-center max-tablet:max-w-full",
                 div { class: "w-full flex flex-col gap-64 items-center max-tablet:gap-48",
@@ -31,13 +28,12 @@ pub fn Top(
                             {" "}
                             span { class: "text-primary", {tr.impact} }
                         }
-
+                    
                     // p { class: "font-extralight text-[15px]/23 tracking-[0px] text-center max-tablet:text-left",
                     //     {tr.description}
                     // }
                     }
-
-                // div { class: "flex flex-col gap-10 w-full items-center",
+                                // div { class: "flex flex-col gap-10 w-full items-center",
                 //     // button {
                 //     //     class: "btn-secondary max-tablet:w-full",
                 //     //     onclick: |_| {},
@@ -51,7 +47,6 @@ pub fn Top(
                 // }
                 }
             }
-
         }
     }
 }

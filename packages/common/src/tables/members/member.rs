@@ -41,6 +41,6 @@ pub enum MemberRole {
     Designer = 4,
     #[translate(ko = "소프트웨어 엔지니어", en = "Software Engineer")]
     Developer = 5,
-    #[translate(ko = "연구원", en = "Research")]
+    #[translate(ko = "연구원", en = "Researcher")]
     Researcher = 6,
 }

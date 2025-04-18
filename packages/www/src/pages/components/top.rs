@@ -17,12 +17,12 @@ pub fn Top(
                 div { class: "w-full flex flex-col gap-64 items-center max-tablet:gap-48",
                     div { class: "w-full max-w-648 flex flex-col gap-32 items-center max-tablet:gap-24",
                         dotlottie-player {
-                            class: "w-208 max-tablet:hidden",
+                            class: "w-208",
                             autoplay: true,
                             src: asset!("/public/logos/logo.json"),
                             speed: 1,
                         }
-                        h1 { class: " font-black text-[64px]/89 tracking-[-0.69px] uppercase text-center max-tablet:text-[44px]/65 max-tablet:text-left max-tablet:w-full",
+                        h1 { class: " font-black text-[64px]/89 tracking-[-0.69px] uppercase text-center max-tablet:text-[44px]/65 max-tablet:w-full",
                             {tr.deep}
                             {" "}
                             span { class: "text-primary", {tr.tech} }

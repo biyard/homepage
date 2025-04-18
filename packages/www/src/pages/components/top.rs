@@ -32,23 +32,23 @@ pub fn Top(
                             span { class: "text-primary", {tr.impact} }
                         }
 
-                        p { class: "font-extralight text-[15px]/23 tracking-[0px] text-center max-tablet:text-left",
-                            {tr.description}
-                        }
+                    // p { class: "font-extralight text-[15px]/23 tracking-[0px] text-center max-tablet:text-left",
+                    //     {tr.description}
+                    // }
                     }
 
-                    div { class: "flex flex-col gap-10 w-full items-center",
-                        button {
-                            class: "btn-secondary max-tablet:w-full",
-                            onclick: |_| {},
-                            {tr.btn_see_all_services}
-                        }
-                        a {
-                            class: "text-white font-semibold text-base border border-white py-15 px-40 rounded-[4px] hover:bg-white/20 hidden max-tablet:block max-tablet:w-full text-center",
-                            href: "#contact",
-                            {tr.btn_contact}
-                        }
-                    }
+                // div { class: "flex flex-col gap-10 w-full items-center",
+                //     // button {
+                //     //     class: "btn-secondary max-tablet:w-full",
+                //     //     onclick: |_| {},
+                //     //     {tr.btn_see_all_services}
+                //     // }
+                //     a {
+                //         class: "text-white font-semibold text-base border border-white py-15 px-40 rounded-[4px] hover:bg-white/20 hidden max-tablet:block max-tablet:w-full text-center",
+                //         href: "#contact",
+                //         {tr.btn_contact}
+                //     }
+                // }
                 }
             }
 

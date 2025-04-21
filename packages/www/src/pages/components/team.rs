@@ -5,6 +5,8 @@ mod member_card;
 
 #[component]
 pub fn Team(lang: Language, members: Vec<MemberSummary>) -> Element {
+    let mut selected = use_signal(|| None);
+
     rsx! {
         section { id: "our-team", class: "w-full relative",
             div { class: "absolute top-[1/2] -left-313 h-1261 w-1261 bg-purple-blur/40 blur-[500px]" }
@@ -19,7 +21,17 @@ pub fn Team(lang: Language, members: Vec<MemberSummary>) -> Element {
                     class: "w-full grid grid-cols-4 gap-24 max-tablet:flex max-tablet:flex-row max-tablet:overflow-x-scroll",
                     style: "scrollbar-width: none; -ms-overflow-style: none; &::-webkit-scrollbar {{ display: none; }}",
                     for member in members {
-                        member_card::MemberCard { member }
+                        member_card::MemberCard {
+                            open: selected() == Some(member.id),
+                            onselect: move |_| {
+                                if selected() == Some(member.id) {
+                                    selected.set(None);
+                                } else {
+                                    selected.set(Some(member.id));
+                                }
+                            },
+                            member,
+                        }
                     }
                 }
             }

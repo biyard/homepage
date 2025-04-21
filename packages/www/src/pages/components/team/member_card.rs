@@ -2,15 +2,24 @@ use bdk::prelude::*;
 use common::MemberSummary;
 
 #[component]
-pub fn MemberCard(member: MemberSummary, class: Option<String>) -> Element {
+pub fn MemberCard(
+    member: MemberSummary,
+    class: Option<String>,
+    onselect: EventHandler<()>,
+    open: bool,
+) -> Element {
     rsx! {
-        div { class: "group w-full h-full overflow-hidden min-w-300 {member.role.color()} rounded-[20px] overflow-hidden",
+        div {
+            class: "group w-full h-full overflow-hidden min-w-300 {member.role.color()} rounded-[20px] overflow-hidden",
+            onclick: move |_| onselect.call(()),
             div { class: "relative h-300 transition-all duration-1000 flex flex-col gap-[10px] items-center justify-center bg-cover",
                 div { class: "absolute top-0 left-0 w-full py-44 flex flex-col items-center justify-start",
                     img { class: " object-cover z-1", src: member.image }
                 }
                 div { class: "member-card-bg z-2" }
-                div { class: "absolute top-0 left-0 z-3 w-full h-full flex flex-col items-start justify-end rounded-[8px] p-24 transition-all duration-1000 group-hover:top-[100%]",
+                div {
+                    class: "absolute top-0 left-0 z-3 w-full h-full flex flex-col items-start justify-end rounded-[8px] p-24 transition-all duration-1000 group-hover:top-[100%] aria-open:top-[100%]",
+                    "aria-open": open,
                     div { class: "text-lg/25 font-medium text-opacity-30 transition-all duration-1000",
                         {member.role.translate(&Language::En)}
                     }
@@ -20,7 +29,9 @@ pub fn MemberCard(member: MemberSummary, class: Option<String>) -> Element {
                     }
                 }
 
-                div { class: "absolute transition-all duration-1000 top-[100%] left-0 w-full h-full group-hover:top-0 flex flex-col items-start justify-start p-[20px] z-4 bg-black/85",
+                div {
+                    class: "absolute transition-all duration-1000 top-[100%] left-0 w-full h-full group-hover:top-0 aria-open:top-0 flex flex-col items-start justify-start p-[20px] z-4 bg-black/85",
+                    "aria-open": open,
                     div { class: "flex flex-col w-full",
                         div { class: "text-[24px] font-black", {member.role.translate(&Language::En)} }
                         div { class: "w-[68px] h-[5px] bg-white" }

@@ -43,4 +43,20 @@ pub enum MemberRole {
     Developer = 5,
     #[translate(ko = "연구원", en = "Researcher")]
     Researcher = 6,
+    #[translate(ko = "마케터", en = "Marketer")]
+    Marketer = 7,
+}
+
+impl MemberRole {
+    pub fn color(&self) -> &'static str {
+        match self {
+            MemberRole::Founder => "bg-member-ceo",
+            MemberRole::CeoAndCto => "bg-member-cto",
+            MemberRole::PM => "bg-member-pm",
+            MemberRole::Designer => "bg-member-designer",
+            MemberRole::Developer => "bg-member-developer",
+            MemberRole::Researcher => "bg-member-researcher",
+            MemberRole::Marketer => "bg-member-marketer",
+        }
+    }
 }

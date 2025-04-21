@@ -32,6 +32,7 @@ impl MemberController {
     ) -> Result<QueryResponse<MemberSummary>> {
         let mut total_count = 0;
         let items: Vec<MemberSummary> = MemberSummary::query_builder()
+            .order_by_role_asc()
             .query()
             .map(|row: PgRow| {
                 use sqlx::Row;
